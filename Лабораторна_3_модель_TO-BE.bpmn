@@ -199,10 +199,10 @@
     <bpmn:sequenceFlow id="Flow_P4" sourceRef="Task_Score" targetRef="Task_Review" />
     <bpmn:sequenceFlow id="Flow_S1" sourceRef="Task_Review" targetRef="Gateway_Activity" />
     <bpmn:sequenceFlow id="Flow_S2_yes" name="Так" sourceRef="Gateway_Activity" targetRef="Task_Evidence">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Значущість підтверджено: рівень R високий; або рівень середній і пояснення не встановлено; або рівень низький, але обсяг перевищує профіль без доручення в IAM (f1 &gt; 0, f4 = 1); або низький рівень спростовано черговим</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Значущість підтверджено: рівень R високий; або обсяг перевищує профіль без доручення в IAM (f1 &gt; 0 і f4 = 1) за будь-якого рівня R; або рівень середній і пояснення не встановлено; або низький рівень спростовано черговим</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_S2_no" name="Ні" sourceRef="Gateway_Activity" targetRef="Task_DocRoutine">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Штатний характер підтверджено: рівень R низький, перевищення профілю без доручення в IAM відсутнє (f1 = 0 або f4 = 0) і низький рівень не спростовано черговим; або рівень середній і черговий встановив пояснення</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Штатний характер підтверджено: рівень R не високий, перевищення профілю без доручення в IAM відсутнє (f1 = 0 або f4 = 0), і при цьому або рівень низький і не спростований черговим, або рівень середній і черговий встановив пояснення</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_S3" sourceRef="Task_DocRoutine" targetRef="End_Routine" />
     <bpmn:sequenceFlow id="Flow_P5" sourceRef="Task_Evidence" targetRef="Task_CheckGrounds" />
