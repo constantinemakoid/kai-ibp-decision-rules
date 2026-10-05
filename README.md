@@ -16,6 +16,8 @@
 * gen_dmn.py, gen_model.py: генерація файлів DMN і BPMN
 * validate.mjs, render.py, render_dmn.py, compare_models.py, charts.py: перевірка, рендер, показники, рисунки
 * risk_score.py: оцінка ризику R з ЛР 3
+* as_is.bpmn, gen_tobe.py, Лабораторна_3_модель_TO-BE.bpmn: вихідні моделі ЛР 3 і генератор моделі TO-BE
+* build_report.py: збирання звіту
 
 ## Запуск
 

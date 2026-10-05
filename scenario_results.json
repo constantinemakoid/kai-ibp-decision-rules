@@ -169,12 +169,12 @@
    "hr": false,
    "h": 0,
    "dlp": false,
-   "ref_rule": "R2.4",
+   "ref_rule": "R2.5",
    "ref": [
     "підстави відсутні",
     false
    ],
-   "dmn_rule": "R2.4",
+   "dmn_rule": "R2.5",
    "dmn": {
     "grounds": "підстави відсутні",
     "aggravating": false
@@ -186,12 +186,12 @@
    "hr": true,
    "h": 0,
    "dlp": false,
-   "ref_rule": "R2.2",
+   "ref_rule": "R2.3",
    "ref": [
     "потрібне уточнення",
     false
    ],
-   "dmn_rule": "R2.2",
+   "dmn_rule": "R2.3",
    "dmn": {
     "grounds": "потрібне уточнення",
     "aggravating": false
@@ -203,12 +203,12 @@
    "hr": false,
    "h": 0,
    "dlp": true,
-   "ref_rule": "R2.3",
+   "ref_rule": "R2.4",
    "ref": [
     "підстави відсутні",
     true
    ],
-   "dmn_rule": "R2.3",
+   "dmn_rule": "R2.4",
    "dmn": {
     "grounds": "підстави відсутні",
     "aggravating": true
@@ -220,12 +220,12 @@
    "hr": false,
    "h": 2,
    "dlp": true,
-   "ref_rule": "R2.3",
+   "ref_rule": "R2.4",
    "ref": [
     "підстави відсутні",
     true
    ],
-   "dmn_rule": "R2.3",
+   "dmn_rule": "R2.4",
    "dmn": {
     "grounds": "підстави відсутні",
     "aggravating": true
@@ -246,6 +246,23 @@
    "dmn": {
     "grounds": "підстави наявні",
     "aggravating": false
+   }
+  },
+  {
+   "id": "G",
+   "k": 25,
+   "hr": true,
+   "h": 1,
+   "dlp": false,
+   "ref_rule": "R2.2",
+   "ref": [
+    "потрібне уточнення",
+    true
+   ],
+   "dmn_rule": "R2.2",
+   "dmn": {
+    "grounds": "потрібне уточнення",
+    "aggravating": true
    }
   }
  ],
@@ -335,8 +352,8 @@
    "no_rule": 0,
    "multi_rule": 0,
    "ref_mismatch": 0,
-   "rules_used": 5,
-   "rules_total": 5
+   "rules_used": 7,
+   "rules_total": 7
   },
   "D3_Containment": {
    "combinations": 12,
@@ -801,7 +818,7 @@
     "rule": "R2.2",
     "out": {
      "grounds": "потрібне уточнення",
-     "aggravating": false
+     "aggravating": true
     }
    },
    {
@@ -810,49 +827,36 @@
      "hrOrder": true,
      "priorIncidents": 0,
      "dlpExternal": false
-    },
-    "rule": "R2.2",
-    "out": {
-     "grounds": "потрібне уточнення",
-     "aggravating": false
-    }
-   },
-   {
-    "ctx": {
-     "outsideFiles": 5,
-     "hrOrder": true,
-     "priorIncidents": 1,
-     "dlpExternal": true
-    },
-    "rule": "R2.2",
-    "out": {
-     "grounds": "потрібне уточнення",
-     "aggravating": false
-    }
-   },
-   {
-    "ctx": {
-     "outsideFiles": 5,
-     "hrOrder": true,
-     "priorIncidents": 1,
-     "dlpExternal": false
-    },
-    "rule": "R2.2",
-    "out": {
-     "grounds": "потрібне уточнення",
-     "aggravating": false
-    }
-   },
-   {
-    "ctx": {
-     "outsideFiles": 5,
-     "hrOrder": false,
-     "priorIncidents": 0,
-     "dlpExternal": true
     },
     "rule": "R2.3",
     "out": {
-     "grounds": "підстави відсутні",
+     "grounds": "потрібне уточнення",
+     "aggravating": false
+    }
+   },
+   {
+    "ctx": {
+     "outsideFiles": 5,
+     "hrOrder": true,
+     "priorIncidents": 1,
+     "dlpExternal": true
+    },
+    "rule": "R2.2",
+    "out": {
+     "grounds": "потрібне уточнення",
+     "aggravating": true
+    }
+   },
+   {
+    "ctx": {
+     "outsideFiles": 5,
+     "hrOrder": true,
+     "priorIncidents": 1,
+     "dlpExternal": false
+    },
+    "rule": "R2.2",
+    "out": {
+     "grounds": "потрібне уточнення",
      "aggravating": true
     }
    },
@@ -861,11 +865,24 @@
      "outsideFiles": 5,
      "hrOrder": false,
      "priorIncidents": 0,
-     "dlpExternal": false
+     "dlpExternal": true
     },
     "rule": "R2.4",
     "out": {
      "grounds": "підстави відсутні",
+     "aggravating": true
+    }
+   },
+   {
+    "ctx": {
+     "outsideFiles": 5,
+     "hrOrder": false,
+     "priorIncidents": 0,
+     "dlpExternal": false
+    },
+    "rule": "R2.5",
+    "out": {
+     "grounds": "підстави відсутні",
      "aggravating": false
     }
    },
@@ -876,7 +893,7 @@
      "priorIncidents": 1,
      "dlpExternal": true
     },
-    "rule": "R2.3",
+    "rule": "R2.4",
     "out": {
      "grounds": "підстави відсутні",
      "aggravating": true
@@ -889,7 +906,7 @@
      "priorIncidents": 1,
      "dlpExternal": false
     },
-    "rule": "R2.3",
+    "rule": "R2.4",
     "out": {
      "grounds": "підстави відсутні",
      "aggravating": true
@@ -1031,7 +1048,7 @@
    }
   ]
  },
- "js_cases": 69,
+ "js_cases": 70,
  "js_diff": [],
  "boundary": [
   [

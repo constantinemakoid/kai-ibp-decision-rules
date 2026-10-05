@@ -26,6 +26,7 @@ GROUNDS = [
     ("D", 50, False, 0),
     ("E", 20, False, 2),
     ("F", 0, False, 0),
+    ("G", 25, True, 1),
 ]
 CONTAINMENT = [
     ("S1", "немає", 1),

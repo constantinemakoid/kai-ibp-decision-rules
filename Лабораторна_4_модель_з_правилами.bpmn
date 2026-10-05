@@ -128,7 +128,7 @@
       <bpmn:outgoing>Flow_P5</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:businessRuleTask id="Rule_D2" name="Застосувати правила D2: підстави доступу">
-      <bpmn:documentation>Таблиця рішень D2_Grounds, правила R2.1...R2.4.</bpmn:documentation>
+      <bpmn:documentation>Таблиця рішень D2_Grounds, правила R2.1...R2.5.</bpmn:documentation>
       <bpmn:extensionElements>
         <zeebe:calledDecision decisionId="D2_Grounds" resultVariable="d2" />
       </bpmn:extensionElements>
@@ -136,7 +136,7 @@
       <bpmn:outgoing>Flow_P5b</bpmn:outgoing>
     </bpmn:businessRuleTask>
     <bpmn:userTask id="Task_CheckGrounds" name="Перевірити пакет доказів і рекомендацію D2">
-      <bpmn:documentation>Рівень B: фахівець з ІБ підтверджує або змінює рекомендацію; результат d2Final.</bpmn:documentation>
+      <bpmn:documentation>Рівень B, правило R2.6: фахівець з ІБ підтверджує або змінює рекомендацію; при d2.aggravating = true результат «підстави наявні» лише з документальним підтвердженням керівника; результат d2Final.</bpmn:documentation>
       <bpmn:incoming>Flow_P5b</bpmn:incoming>
       <bpmn:outgoing>Flow_I1</bpmn:outgoing>
     </bpmn:userTask>

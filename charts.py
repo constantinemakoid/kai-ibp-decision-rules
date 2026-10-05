@@ -14,35 +14,45 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10, "text.color"
 
 res = json.load(open("scenario_results.json", encoding="utf-8"))
 COLORS = {
-    ("ескалувати", "високий"): ORANGE,
-    ("ескалувати", "середній"): YELLOW,
-    ("закрити як штатну", "низький"): BLUE,
-    ("підстави відсутні", True): ORANGE,
-    ("підстави відсутні", False): YELLOW,
-    ("потрібне уточнення", False): PINK,
-    ("підстави наявні", False): BLUE,
-    ("відповідає",): TEAL,
-    ("повторити передачу",): YELLOW,
-    ("ескалувати фахівцю",): ORANGE,
+    ("ескалувати", "високий"): (ORANGE, ""),
+    ("ескалувати", "середній"): (YELLOW, ""),
+    ("закрити як штатну", "низький"): (BLUE, ""),
+    ("підстави відсутні", True): (ORANGE, "///"),
+    ("підстави відсутні", False): (ORANGE, ""),
+    ("потрібне уточнення", True): (PINK, "///"),
+    ("потрібне уточнення", False): (PINK, ""),
+    ("підстави наявні", False): (BLUE, ""),
+    ("відповідає",): (TEAL, ""),
+    ("повторити передачу",): (YELLOW, ""),
+    ("ескалувати фахівцю",): (ORANGE, ""),
 }
-LEGEND = [
-    (ORANGE, "Ескалація з високим пріоритетом; D2: підстави відсутні, обтяжуючі ознаки; D3: передача фахівцю"),
-    (YELLOW, "Ескалація з середнім пріоритетом; D2: підстави відсутні; D3: повтор передачі"),
-    (PINK, "D2: потрібне уточнення фахівцем"),
-    (BLUE, "Закрити як штатну; D2: підстави наявні"),
-    (TEAL, "D3: стан прав відповідає рішенню"),
-]
+LEGENDS = {
+    "D1": [(ORANGE, "", "ескалувати, пріоритет високий"), (YELLOW, "", "ескалувати, пріоритет середній"),
+           (BLUE, "", "закрити як штатну")],
+    "D2": [(ORANGE, "", "підстави відсутні"), (PINK, "", "потрібне уточнення"), (BLUE, "", "підстави наявні"),
+           ("white", "///", "обтяжуючі ознаки")],
+    "D3": [(TEAL, "", "відповідає"), (YELLOW, "", "повторити передачу"), (ORANGE, "", "ескалувати фахівцю")],
+}
 
 
 def yn(v):
     return "так" if v else "ні"
 
 
+def legend(ax, key, ncol):
+    handles = [Patch(facecolor=c, edgecolor=TXT2 if h else c, hatch=h, label=l) for c, h, l in LEGENDS[key]]
+    ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=ncol, frameon=False,
+              fontsize=9, handlelength=1.6)
+
+
 def grid(ax, rows, cols, cell, title, rlab, clab):
     for i, r in enumerate(rows):
         for j, c in enumerate(cols):
-            rule, color = cell(r, c)
+            rule, (color, hatch) = cell(r, c)
             ax.add_patch(plt.Rectangle((j, i), 1, 1, facecolor=color, edgecolor="white", linewidth=2))
+            if hatch:
+                ax.add_patch(plt.Rectangle((j, i), 1, 1, facecolor="none", edgecolor=TXT2, hatch=hatch,
+                                           linewidth=0))
             ax.text(j + 0.5, i + 0.5, rule, ha="center", va="center", fontsize=10, color=TXT, weight="bold")
     ax.set_xlim(0, len(cols))
     ax.set_ylim(len(rows), 0)
@@ -73,7 +83,7 @@ def coverage_chart():
     grid(ax1, rows1, cols1,
          lambda r, c: lookup("D1_Significance", lambda x: (x["riskLevel"], x["dlpExternal"], x["overProfile"],
                                                           x["noGrant"]) == (r[0], r[1], c[0], c[1])),
-         "D1: 24 комбінації умов", lambda r: f"рівень {r[0]}, f6 = 1: {yn(r[1])}",
+         f"D1: {len(rows1) * len(cols1)} комбінації умов", lambda r: f"рівень {r[0]}, f6 = 1: {yn(r[1])}",
          lambda c: f"f1 > 0: {yn(c[0])}\nf4 = 1: {yn(c[1])}")
     ax2 = fig.add_subplot(g[1, 0])
     rows2 = [(k, hr) for k in (0, 5) for hr in (True, False)]
@@ -89,17 +99,19 @@ def coverage_chart():
     grid(ax3, rows3, cols3,
          lambda r, c: lookup("D3_Containment", lambda x: (x["mismatch"], x["attempt"]) == (r, c)),
          f"D3: 12 комбінацій, Kmax = {res['params']['K_MAX']}", lambda r: r, lambda c: f"n = {c}")
-    fig.legend(handles=[Patch(facecolor=c, label=l) for c, l in LEGEND], loc="lower center", ncol=1,
-               frameon=False, fontsize=9)
-    fig.subplots_adjust(left=0.2, right=0.97, top=0.95, bottom=0.2)
+    legend(ax1, "D1", 3)
+    legend(ax2, "D2", 2)
+    legend(ax3, "D3", 1)
+    fig.subplots_adjust(left=0.2, right=0.97, top=0.95, bottom=0.17)
     fig.savefig("fig_coverage.png")
 
 
 DI = {"bpmndi": "http://www.omg.org/spec/BPMN/20100524/DI", "dc": "http://www.omg.org/spec/DD/20100524/DC"}
 FRAGMENTS = {
-    "fig_model_part1.png": (290, 270, 1930, 1035),
-    "fig_model_part2.png": (1930, 600, 3545, 1035),
+    "fig_model_part1.png": (290, 280, 1930, 1040),
+    "fig_model_part2.png": (1930, 520, 3545, 1040),
 }
+HEADER = (160, 222)
 
 
 def boxes(path):
@@ -135,8 +147,16 @@ def crops(bpmn="Лабораторна_4_модель_з_правилами.bpmn
         if bad:
             raise SystemExit(f"{name}: {bad}")
         x0, y0, x1, y1 = frame
-        im.crop(tuple(int(v) for v in ((x0 - vx) * scale, (y0 - vy) * scale,
-                                       (x1 - vx) * scale, (y1 - vy) * scale))).save(name)
+        hx0, hx1 = HEADER
+        head = im.crop(tuple(int(v) for v in ((hx0 - vx) * scale, (y0 - vy) * scale, (hx1 - vx) * scale,
+                                              (y1 - vy) * scale)))
+        body = im.crop(tuple(int(v) for v in ((x0 - vx) * scale, (y0 - vy) * scale,
+                                              (x1 - vx) * scale, (y1 - vy) * scale)))
+        gap = 6 * scale
+        out = Image.new("RGB", (head.width + gap + body.width, body.height), "white")
+        out.paste(head, (0, 0))
+        out.paste(body, (head.width + gap, 0))
+        out.save(name)
 
 
 coverage_chart()

@@ -45,11 +45,14 @@ def d1_final(recommendation, override_allowed, soc_override):
 def d2(outside, hr_order, prior, dlp):
     if outside == 0:
         return "R2.1", PRESENT, False
+    aggravating = prior > 0 or dlp
     if hr_order:
-        return "R2.2", CLARIFY, False
-    if prior > 0 or dlp:
-        return "R2.3", ABSENT, True
-    return "R2.4", ABSENT, False
+        if aggravating:
+            return "R2.2", CLARIFY, True
+        return "R2.3", CLARIFY, False
+    if aggravating:
+        return "R2.4", ABSENT, True
+    return "R2.5", ABSENT, False
 
 
 def d3(mismatch, attempt, k_max=K_MAX):

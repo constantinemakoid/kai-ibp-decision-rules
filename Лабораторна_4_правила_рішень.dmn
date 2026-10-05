@@ -240,87 +240,129 @@
           <text>false</text>
         </outputEntry>
       </rule>
-      <rule id="R2_2">
-        <description>R2.2 є кадровий наказ</description>
-        <inputEntry id="R2_2_in1">
+      <rule id="R2_2a">
+        <description>R2.2 наказ і повторний інцидент</description>
+        <inputEntry id="R2_2a_in1">
           <text>&gt; 0</text>
         </inputEntry>
-        <inputEntry id="R2_2_in2">
+        <inputEntry id="R2_2a_in2">
           <text>true</text>
         </inputEntry>
-        <inputEntry id="R2_2_in3">
+        <inputEntry id="R2_2a_in3">
+          <text>&gt; 0</text>
+        </inputEntry>
+        <inputEntry id="R2_2a_in4">
           <text>-</text>
         </inputEntry>
-        <inputEntry id="R2_2_in4">
-          <text>-</text>
-        </inputEntry>
-        <outputEntry id="R2_2_out1">
+        <outputEntry id="R2_2a_out1">
           <text>"потрібне уточнення"</text>
         </outputEntry>
-        <outputEntry id="R2_2_out2">
+        <outputEntry id="R2_2a_out2">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="R2_2b">
+        <description>R2.2 наказ і передача на носій</description>
+        <inputEntry id="R2_2b_in1">
+          <text>&gt; 0</text>
+        </inputEntry>
+        <inputEntry id="R2_2b_in2">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="R2_2b_in3">
+          <text>0</text>
+        </inputEntry>
+        <inputEntry id="R2_2b_in4">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="R2_2b_out1">
+          <text>"потрібне уточнення"</text>
+        </outputEntry>
+        <outputEntry id="R2_2b_out2">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="R2_3">
+        <description>R2.3 наказ без обтяжуючих ознак</description>
+        <inputEntry id="R2_3_in1">
+          <text>&gt; 0</text>
+        </inputEntry>
+        <inputEntry id="R2_3_in2">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="R2_3_in3">
+          <text>0</text>
+        </inputEntry>
+        <inputEntry id="R2_3_in4">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="R2_3_out1">
+          <text>"потрібне уточнення"</text>
+        </outputEntry>
+        <outputEntry id="R2_3_out2">
           <text>false</text>
         </outputEntry>
       </rule>
-      <rule id="R2_3a">
-        <description>R2.3 повторний інцидент</description>
-        <inputEntry id="R2_3a_in1">
+      <rule id="R2_4a">
+        <description>R2.4 повторний інцидент</description>
+        <inputEntry id="R2_4a_in1">
           <text>&gt; 0</text>
         </inputEntry>
-        <inputEntry id="R2_3a_in2">
+        <inputEntry id="R2_4a_in2">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="R2_3a_in3">
+        <inputEntry id="R2_4a_in3">
           <text>&gt; 0</text>
         </inputEntry>
-        <inputEntry id="R2_3a_in4">
+        <inputEntry id="R2_4a_in4">
           <text>-</text>
         </inputEntry>
-        <outputEntry id="R2_3a_out1">
+        <outputEntry id="R2_4a_out1">
           <text>"підстави відсутні"</text>
         </outputEntry>
-        <outputEntry id="R2_3a_out2">
+        <outputEntry id="R2_4a_out2">
           <text>true</text>
         </outputEntry>
       </rule>
-      <rule id="R2_3b">
-        <description>R2.3 передача на носій</description>
-        <inputEntry id="R2_3b_in1">
+      <rule id="R2_4b">
+        <description>R2.4 передача на носій</description>
+        <inputEntry id="R2_4b_in1">
           <text>&gt; 0</text>
         </inputEntry>
-        <inputEntry id="R2_3b_in2">
+        <inputEntry id="R2_4b_in2">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="R2_3b_in3">
+        <inputEntry id="R2_4b_in3">
           <text>0</text>
         </inputEntry>
-        <inputEntry id="R2_3b_in4">
+        <inputEntry id="R2_4b_in4">
           <text>true</text>
         </inputEntry>
-        <outputEntry id="R2_3b_out1">
+        <outputEntry id="R2_4b_out1">
           <text>"підстави відсутні"</text>
         </outputEntry>
-        <outputEntry id="R2_3b_out2">
+        <outputEntry id="R2_4b_out2">
           <text>true</text>
         </outputEntry>
       </rule>
-      <rule id="R2_4">
-        <description>R2.4 без обтяжуючих ознак</description>
-        <inputEntry id="R2_4_in1">
+      <rule id="R2_5">
+        <description>R2.5 без обтяжуючих ознак</description>
+        <inputEntry id="R2_5_in1">
           <text>&gt; 0</text>
         </inputEntry>
-        <inputEntry id="R2_4_in2">
+        <inputEntry id="R2_5_in2">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="R2_4_in3">
+        <inputEntry id="R2_5_in3">
           <text>0</text>
         </inputEntry>
-        <inputEntry id="R2_4_in4">
+        <inputEntry id="R2_5_in4">
           <text>false</text>
         </inputEntry>
-        <outputEntry id="R2_4_out1">
+        <outputEntry id="R2_5_out1">
           <text>"підстави відсутні"</text>
         </outputEntry>
-        <outputEntry id="R2_4_out2">
+        <outputEntry id="R2_5_out2">
           <text>false</text>
         </outputEntry>
       </rule>
