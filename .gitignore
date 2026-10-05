@@ -1,0 +1,6 @@
+node_modules/
+pages/
+__pycache__/
+*.docx
+*.pdf
+cases.json

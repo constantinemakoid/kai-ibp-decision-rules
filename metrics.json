@@ -1,0 +1,737 @@
+{
+ "as_is": {
+  "user_tasks": 7,
+  "service_tasks": 10,
+  "rule_tasks": 0,
+  "tasks": 17,
+  "main_path_rule_tasks": 0,
+  "conditions": 6,
+  "feel_conditions": 0,
+  "exclusive_gateways": 4,
+  "start_events": 5,
+  "end_events": 7,
+  "catch_events": 2,
+  "throw_events": 1,
+  "sequence_flows": 32,
+  "message_flows": 7,
+  "pools": 4,
+  "lanes": 4,
+  "main_path_len": 20,
+  "main_path_user_tasks": 4,
+  "main_path_service_tasks": 7,
+  "user_tasks_to_containment": 3,
+  "waits_to_containment": 0,
+  "main_path_waits": 2,
+  "performer_changes": 5,
+  "transfer_tasks_by_human": 0,
+  "transfer_tasks_list": [],
+  "decision_gateways": 3,
+  "messages_sent_by_human": 0,
+  "decision_gateways_on_path": 3,
+  "path": [
+   "Start_Alert",
+   "Task_CreateCard",
+   "Task_Enrich",
+   "Task_Score",
+   "Task_Review",
+   "Gateway_Activity",
+   "Task_Evidence",
+   "Task_CheckGrounds",
+   "Gateway_Grounds",
+   "Task_Classify",
+   "Throw_HeadNotice",
+   "Gateway_Merge",
+   "Task_SendDecision",
+   "Catch_RestrictDone",
+   "Task_VerifyRights",
+   "Gateway_RightsOk",
+   "Catch_HeadDecision",
+   "Task_DraftReport",
+   "Task_ApproveReport",
+   "End_Report"
+  ]
+ },
+ "to_be": {
+  "user_tasks": 8,
+  "service_tasks": 10,
+  "rule_tasks": 3,
+  "tasks": 21,
+  "main_path_rule_tasks": 3,
+  "conditions": 7,
+  "feel_conditions": 7,
+  "exclusive_gateways": 5,
+  "start_events": 5,
+  "end_events": 7,
+  "catch_events": 2,
+  "throw_events": 1,
+  "sequence_flows": 38,
+  "message_flows": 7,
+  "pools": 4,
+  "lanes": 4,
+  "main_path_len": 24,
+  "main_path_user_tasks": 4,
+  "main_path_service_tasks": 7,
+  "user_tasks_to_containment": 3,
+  "waits_to_containment": 0,
+  "main_path_waits": 2,
+  "performer_changes": 5,
+  "transfer_tasks_by_human": 0,
+  "transfer_tasks_list": [],
+  "decision_gateways": 3,
+  "messages_sent_by_human": 0,
+  "decision_gateways_on_path": 3,
+  "path": [
+   "Start_Alert",
+   "Task_CreateCard",
+   "Task_Enrich",
+   "Task_Score",
+   "Rule_D1",
+   "Task_Review",
+   "Gateway_Activity",
+   "Task_Evidence",
+   "Rule_D2",
+   "Task_CheckGrounds",
+   "Gateway_Grounds",
+   "Task_Classify",
+   "Throw_HeadNotice",
+   "Gateway_Merge",
+   "Task_SendDecision",
+   "Catch_RestrictDone",
+   "Task_VerifyRights",
+   "Rule_D3",
+   "Gateway_RightsOk",
+   "Gateway_MergeOk",
+   "Catch_HeadDecision",
+   "Task_DraftReport",
+   "Task_ApproveReport",
+   "End_Report"
+  ]
+ },
+ "as_is_perf": {
+  "Система аудиту документообігу": {
+   "serviceTask": 1
+  },
+  "Платформа обробки інцидентів": {
+   "serviceTask": 7
+  },
+  "Черговий SOC": {
+   "userTask": 2
+  },
+  "Фахівець з ІБ": {
+   "userTask": 4
+  },
+  "Система IAM": {
+   "serviceTask": 2
+  },
+  "Керівник підрозділу": {
+   "userTask": 1
+  }
+ },
+ "to_be_perf": {
+  "Система аудиту документообігу": {
+   "serviceTask": 1
+  },
+  "Платформа обробки інцидентів": {
+   "serviceTask": 7,
+   "businessRuleTask": 3
+  },
+  "Черговий SOC": {
+   "userTask": 2
+  },
+  "Фахівець з ІБ": {
+   "userTask": 5
+  },
+  "Система IAM": {
+   "serviceTask": 2
+  },
+  "Керівник підрозділу": {
+   "userTask": 1
+  }
+ },
+ "as_is_geom": {
+  "shapes": 44,
+  "edges": 39,
+  "overlaps": 0,
+  "nonortho": 0,
+  "through": 0,
+  "through_list": [],
+  "crossings": 0,
+  "crossing_list": [],
+  "outside": 0
+ },
+ "to_be_geom": {
+  "shapes": 49,
+  "edges": 45,
+  "overlaps": 0,
+  "nonortho": 0,
+  "through": 0,
+  "through_list": [],
+  "crossings": 0,
+  "crossing_list": [],
+  "outside": 0
+ },
+ "as_is_reach": {
+  "nodes": 36,
+  "unreachable": [],
+  "no_path_to_end": []
+ },
+ "to_be_reach": {
+  "nodes": 41,
+  "unreachable": [],
+  "no_path_to_end": []
+ },
+ "to_be_nodes": {
+  "Start_Audit": {
+   "type": "startEvent",
+   "name": "Зафіксовано перегляд і копіювання документів іншого підрозділу",
+   "pool": "Система аудиту документообігу",
+   "performer": "Система аудиту документообігу"
+  },
+  "Task_Register": {
+   "type": "serviceTask",
+   "name": "Сформувати запис аудиту та сповіщення",
+   "pool": "Система аудиту документообігу",
+   "performer": "Система аудиту документообігу"
+  },
+  "End_Audit": {
+   "type": "endEvent",
+   "name": "Запис і сповіщення сформовано",
+   "pool": "Система аудиту документообігу",
+   "performer": "Система аудиту документообігу"
+  },
+  "Start_Alert": {
+   "type": "startEvent",
+   "name": "Отримано первинне сповіщення",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_CreateCard": {
+   "type": "serviceTask",
+   "name": "Зареєструвати картку інциденту",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_Enrich": {
+   "type": "serviceTask",
+   "name": "Зібрати контекст: DLP, IAM, підрозділ",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_Score": {
+   "type": "serviceTask",
+   "name": "Оцінити ризик R і визначити рівень",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Rule_D1": {
+   "type": "businessRuleTask",
+   "name": "Застосувати правила D1: значущість події",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_Review": {
+   "type": "userTask",
+   "name": "Підтвердити рекомендацію D1 або змінити з обґрунтуванням",
+   "pool": "Служба ІБ",
+   "performer": "Черговий SOC"
+  },
+  "Gateway_Activity": {
+   "type": "exclusiveGateway",
+   "name": "Рішення D1: ескалувати?",
+   "pool": "Служба ІБ",
+   "performer": "Черговий SOC"
+  },
+  "Task_DocRoutine": {
+   "type": "userTask",
+   "name": "Закрити картку як штатну подію",
+   "pool": "Служба ІБ",
+   "performer": "Черговий SOC"
+  },
+  "End_Routine": {
+   "type": "endEvent",
+   "name": "Подію закрито як штатну",
+   "pool": "Служба ІБ",
+   "performer": "Черговий SOC"
+  },
+  "Task_Evidence": {
+   "type": "serviceTask",
+   "name": "Сформувати пакет доказів і призначити фахівцю з ІБ",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Rule_D2": {
+   "type": "businessRuleTask",
+   "name": "Застосувати правила D2: підстави доступу",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_CheckGrounds": {
+   "type": "userTask",
+   "name": "Перевірити пакет доказів і рекомендацію D2",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "Gateway_Grounds": {
+   "type": "exclusiveGateway",
+   "name": "Рішення D2: підстави відсутні?",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "Task_CloseUnconf": {
+   "type": "userTask",
+   "name": "Закрити подію як непідтверджену",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "End_NotConfirmed": {
+   "type": "endEvent",
+   "name": "Інцидент не підтверджено",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "Task_Classify": {
+   "type": "userTask",
+   "name": "Підтвердити критичність і захід обмеження",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "Throw_HeadNotice": {
+   "type": "intermediateThrowEvent",
+   "name": "Повідомлення керівнику надіслано",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Gateway_Merge": {
+   "type": "exclusiveGateway",
+   "name": "",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_SendDecision": {
+   "type": "serviceTask",
+   "name": "Передати IAM рішення про обмеження доступу",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Catch_RestrictDone": {
+   "type": "intermediateCatchEvent",
+   "name": "Обмеження доступу підтверджено",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_VerifyRights": {
+   "type": "serviceTask",
+   "name": "Визначити розбіжність прав із рішенням",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Rule_D3": {
+   "type": "businessRuleTask",
+   "name": "Застосувати правила D3: контроль прав",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Gateway_RightsOk": {
+   "type": "exclusiveGateway",
+   "name": "Результат D3",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_FixRights": {
+   "type": "userTask",
+   "name": "Усунути розбіжність прав і підтвердити стан",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "Gateway_MergeOk": {
+   "type": "exclusiveGateway",
+   "name": "",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Catch_HeadDecision": {
+   "type": "intermediateCatchEvent",
+   "name": "Отримано рішення керівника",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_DraftReport": {
+   "type": "serviceTask",
+   "name": "Сформувати чернетку звіту з картки інциденту",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_ApproveReport": {
+   "type": "userTask",
+   "name": "Перевірити та затвердити звіт",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "End_Report": {
+   "type": "endEvent",
+   "name": "Інцидент закрито зі звітом",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "Start_IAM_Rights": {
+   "type": "startEvent",
+   "name": "Отримано запит повноважень",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "Task_ProvideRights": {
+   "type": "serviceTask",
+   "name": "Надати дані про фактичні повноваження",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "End_IAM_Rights": {
+   "type": "endEvent",
+   "name": "Дані надано",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "Start_IAM_Restrict": {
+   "type": "startEvent",
+   "name": "Отримано рішення про обмеження",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "Task_Restrict": {
+   "type": "serviceTask",
+   "name": "Обмежити повноваження або заблокувати обліковий запис",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "End_IAM_Restrict": {
+   "type": "endEvent",
+   "name": "Обмеження виконано",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "Start_Head": {
+   "type": "startEvent",
+   "name": "Отримано повідомлення про інцидент",
+   "pool": "Підрозділ користувача",
+   "performer": "Керівник підрозділу"
+  },
+  "Task_ApproveOrg": {
+   "type": "userTask",
+   "name": "Погодити організаційні заходи щодо співробітника",
+   "pool": "Підрозділ користувача",
+   "performer": "Керівник підрозділу"
+  },
+  "End_Head": {
+   "type": "endEvent",
+   "name": "Рішення керівника передано",
+   "pool": "Підрозділ користувача",
+   "performer": "Керівник підрозділу"
+  }
+ },
+ "as_is_nodes": {
+  "Start_Audit": {
+   "type": "startEvent",
+   "name": "Зафіксовано перегляд і копіювання документів іншого підрозділу",
+   "pool": "Система аудиту документообігу",
+   "performer": "Система аудиту документообігу"
+  },
+  "Task_Register": {
+   "type": "serviceTask",
+   "name": "Сформувати запис аудиту та сповіщення",
+   "pool": "Система аудиту документообігу",
+   "performer": "Система аудиту документообігу"
+  },
+  "End_Audit": {
+   "type": "endEvent",
+   "name": "Запис і сповіщення сформовано",
+   "pool": "Система аудиту документообігу",
+   "performer": "Система аудиту документообігу"
+  },
+  "Start_Alert": {
+   "type": "startEvent",
+   "name": "Отримано первинне сповіщення",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_CreateCard": {
+   "type": "serviceTask",
+   "name": "Зареєструвати картку інциденту",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_Enrich": {
+   "type": "serviceTask",
+   "name": "Зібрати контекст: DLP, IAM, підрозділ",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_Score": {
+   "type": "serviceTask",
+   "name": "Оцінити ризик і рекомендувати пріоритет",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_Review": {
+   "type": "userTask",
+   "name": "Перевірити оцінку ризику та підтвердити значущість",
+   "pool": "Служба ІБ",
+   "performer": "Черговий SOC"
+  },
+  "Gateway_Activity": {
+   "type": "exclusiveGateway",
+   "name": "Перевищує звичайну активність?",
+   "pool": "Служба ІБ",
+   "performer": "Черговий SOC"
+  },
+  "Task_DocRoutine": {
+   "type": "userTask",
+   "name": "Закрити картку як штатну подію",
+   "pool": "Служба ІБ",
+   "performer": "Черговий SOC"
+  },
+  "End_Routine": {
+   "type": "endEvent",
+   "name": "Подію закрито як штатну",
+   "pool": "Служба ІБ",
+   "performer": "Черговий SOC"
+  },
+  "Task_Evidence": {
+   "type": "serviceTask",
+   "name": "Сформувати пакет доказів і призначити фахівцю з ІБ",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_CheckGrounds": {
+   "type": "userTask",
+   "name": "Перевірити пакет доказів і підстави доступу",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "Gateway_Grounds": {
+   "type": "exclusiveGateway",
+   "name": "Відсутність правомірних підстав підтверджено?",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "Task_CloseUnconf": {
+   "type": "userTask",
+   "name": "Закрити подію як непідтверджену",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "End_NotConfirmed": {
+   "type": "endEvent",
+   "name": "Інцидент не підтверджено",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "Task_Classify": {
+   "type": "userTask",
+   "name": "Підтвердити критичність і захід обмеження",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "Throw_HeadNotice": {
+   "type": "intermediateThrowEvent",
+   "name": "Повідомлення керівнику надіслано",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Gateway_Merge": {
+   "type": "exclusiveGateway",
+   "name": "",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_SendDecision": {
+   "type": "serviceTask",
+   "name": "Передати IAM рішення про обмеження доступу",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Catch_RestrictDone": {
+   "type": "intermediateCatchEvent",
+   "name": "Обмеження доступу підтверджено",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_VerifyRights": {
+   "type": "serviceTask",
+   "name": "Звірити фактичний стан прав із рішенням",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Gateway_RightsOk": {
+   "type": "exclusiveGateway",
+   "name": "Стан прав відповідає рішенню?",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Catch_HeadDecision": {
+   "type": "intermediateCatchEvent",
+   "name": "Отримано рішення керівника",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_DraftReport": {
+   "type": "serviceTask",
+   "name": "Сформувати чернетку звіту з картки інциденту",
+   "pool": "Служба ІБ",
+   "performer": "Платформа обробки інцидентів"
+  },
+  "Task_ApproveReport": {
+   "type": "userTask",
+   "name": "Перевірити та затвердити звіт",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "End_Report": {
+   "type": "endEvent",
+   "name": "Інцидент закрито зі звітом",
+   "pool": "Служба ІБ",
+   "performer": "Фахівець з ІБ"
+  },
+  "Start_IAM_Rights": {
+   "type": "startEvent",
+   "name": "Отримано запит повноважень",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "Task_ProvideRights": {
+   "type": "serviceTask",
+   "name": "Надати дані про фактичні повноваження",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "End_IAM_Rights": {
+   "type": "endEvent",
+   "name": "Дані надано",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "Start_IAM_Restrict": {
+   "type": "startEvent",
+   "name": "Отримано рішення про обмеження",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "Task_Restrict": {
+   "type": "serviceTask",
+   "name": "Обмежити повноваження або заблокувати обліковий запис",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "End_IAM_Restrict": {
+   "type": "endEvent",
+   "name": "Обмеження виконано",
+   "pool": "Система IAM",
+   "performer": "Система IAM"
+  },
+  "Start_Head": {
+   "type": "startEvent",
+   "name": "Отримано повідомлення про інцидент",
+   "pool": "Підрозділ користувача",
+   "performer": "Керівник підрозділу"
+  },
+  "Task_ApproveOrg": {
+   "type": "userTask",
+   "name": "Погодити організаційні заходи щодо співробітника",
+   "pool": "Підрозділ користувача",
+   "performer": "Керівник підрозділу"
+  },
+  "End_Head": {
+   "type": "endEvent",
+   "name": "Рішення керівника передано",
+   "pool": "Підрозділ користувача",
+   "performer": "Керівник підрозділу"
+  }
+ },
+ "to_be_msg": [
+  [
+   "MsgFlow_Alert",
+   "Task_Register",
+   "Start_Alert",
+   "Первинне сповіщення"
+  ],
+  [
+   "MsgFlow_RightsReq",
+   "Task_Enrich",
+   "Start_IAM_Rights",
+   "Запит фактичних повноважень"
+  ],
+  [
+   "MsgFlow_RightsData",
+   "Task_ProvideRights",
+   "Task_Enrich",
+   "Дані про фактичні повноваження"
+  ],
+  [
+   "MsgFlow_HeadNotice",
+   "Throw_HeadNotice",
+   "Start_Head",
+   "Повідомлення про підтверджений інцидент"
+  ],
+  [
+   "MsgFlow_Decision",
+   "Task_SendDecision",
+   "Start_IAM_Restrict",
+   "Рішення про обмеження доступу"
+  ],
+  [
+   "MsgFlow_Done",
+   "Task_Restrict",
+   "Catch_RestrictDone",
+   "Підтвердження обмеження доступу"
+  ],
+  [
+   "MsgFlow_HeadDecision",
+   "End_Head",
+   "Catch_HeadDecision",
+   "Рішення щодо організаційних заходів"
+  ]
+ ],
+ "as_is_msg": [
+  [
+   "MsgFlow_Alert",
+   "Task_Register",
+   "Start_Alert",
+   "Первинне сповіщення"
+  ],
+  [
+   "MsgFlow_RightsReq",
+   "Task_Enrich",
+   "Start_IAM_Rights",
+   "Запит фактичних повноважень"
+  ],
+  [
+   "MsgFlow_RightsData",
+   "Task_ProvideRights",
+   "Task_Enrich",
+   "Дані про фактичні повноваження"
+  ],
+  [
+   "MsgFlow_HeadNotice",
+   "Throw_HeadNotice",
+   "Start_Head",
+   "Повідомлення про підтверджений інцидент"
+  ],
+  [
+   "MsgFlow_Decision",
+   "Task_SendDecision",
+   "Start_IAM_Restrict",
+   "Рішення про обмеження доступу"
+  ],
+  [
+   "MsgFlow_Done",
+   "Task_Restrict",
+   "Catch_RestrictDone",
+   "Підтвердження обмеження доступу"
+  ],
+  [
+   "MsgFlow_HeadDecision",
+   "End_Head",
+   "Catch_HeadDecision",
+   "Рішення щодо організаційних заходів"
+  ]
+ ]
+}

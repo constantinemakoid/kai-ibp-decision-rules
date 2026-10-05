@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_IBP4" name="Правила прийняття рішень ЛР 4" namespace="http://camunda.org/schema/1.0/dmn" exporter="ibp4_gen_dmn.py" exporterVersion="1.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <decision id="D1_Significance" name="D1 Значущість події">
+    <decisionTable id="DT_D1_Significance" hitPolicy="UNIQUE">
+      <input id="In_D1_Significance_1" label="Рівень R">
+        <inputExpression id="InExpr_D1_Significance_1" typeRef="string">
+          <text>riskLevel</text>
+        </inputExpression>
+      </input>
+      <input id="In_D1_Significance_2" label="Перевищення профілю, f1 &gt; 0">
+        <inputExpression id="InExpr_D1_Significance_2" typeRef="boolean">
+          <text>overProfile</text>
+        </inputExpression>
+      </input>
+      <input id="In_D1_Significance_3" label="Доручення відсутнє, f4 = 1">
+        <inputExpression id="InExpr_D1_Significance_3" typeRef="boolean">
+          <text>noGrant</text>
+        </inputExpression>
+      </input>
+      <input id="In_D1_Significance_4" label="Зовнішній носій, f6 = 1">
+        <inputExpression id="InExpr_D1_Significance_4" typeRef="boolean">
+          <text>dlpExternal</text>
+        </inputExpression>
+      </input>
+      <output id="Out_D1_Significance_1" label="Рекомендація" name="recommendation" typeRef="string" />
+      <output id="Out_D1_Significance_2" label="Пріоритет" name="priority" typeRef="string" />
+      <output id="Out_D1_Significance_3" label="Зміна дозволена" name="overrideAllowed" typeRef="boolean" />
+      <rule id="R1_1">
+        <description>R1.1 високий рівень</description>
+        <inputEntry id="R1_1_in1">
+          <text>"високий"</text>
+        </inputEntry>
+        <inputEntry id="R1_1_in2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R1_1_in3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R1_1_in4">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="R1_1_out1">
+          <text>"ескалувати"</text>
+        </outputEntry>
+        <outputEntry id="R1_1_out2">
+          <text>"високий"</text>
+        </outputEntry>
+        <outputEntry id="R1_1_out3">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="R1_2">
+        <description>R1.2 середній рівень і DLP</description>
+        <inputEntry id="R1_2_in1">
+          <text>"середній"</text>
+        </inputEntry>
+        <inputEntry id="R1_2_in2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R1_2_in3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R1_2_in4">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="R1_2_out1">
+          <text>"ескалувати"</text>
+        </outputEntry>
+        <outputEntry id="R1_2_out2">
+          <text>"високий"</text>
+        </outputEntry>
+        <outputEntry id="R1_2_out3">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="R1_3">
+        <description>R1.3 середній рівень без DLP</description>
+        <inputEntry id="R1_3_in1">
+          <text>"середній"</text>
+        </inputEntry>
+        <inputEntry id="R1_3_in2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R1_3_in3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R1_3_in4">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="R1_3_out1">
+          <text>"ескалувати"</text>
+        </outputEntry>
+        <outputEntry id="R1_3_out2">
+          <text>"середній"</text>
+        </outputEntry>
+        <outputEntry id="R1_3_out3">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="R1_4">
+        <description>R1.4 низький рівень і DLP</description>
+        <inputEntry id="R1_4_in1">
+          <text>"низький"</text>
+        </inputEntry>
+        <inputEntry id="R1_4_in2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R1_4_in3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R1_4_in4">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="R1_4_out1">
+          <text>"ескалувати"</text>
+        </outputEntry>
+        <outputEntry id="R1_4_out2">
+          <text>"середній"</text>
+        </outputEntry>
+        <outputEntry id="R1_4_out3">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="R1_5">
+        <description>R1.5 перевищення без доручення</description>
+        <inputEntry id="R1_5_in1">
+          <text>"низький"</text>
+        </inputEntry>
+        <inputEntry id="R1_5_in2">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="R1_5_in3">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="R1_5_in4">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="R1_5_out1">
+          <text>"ескалувати"</text>
+        </outputEntry>
+        <outputEntry id="R1_5_out2">
+          <text>"середній"</text>
+        </outputEntry>
+        <outputEntry id="R1_5_out3">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="R1_6">
+        <description>R1.6 перевищення з дорученням</description>
+        <inputEntry id="R1_6_in1">
+          <text>"низький"</text>
+        </inputEntry>
+        <inputEntry id="R1_6_in2">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="R1_6_in3">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="R1_6_in4">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="R1_6_out1">
+          <text>"закрити як штатну"</text>
+        </outputEntry>
+        <outputEntry id="R1_6_out2">
+          <text>"низький"</text>
+        </outputEntry>
+        <outputEntry id="R1_6_out3">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="R1_7">
+        <description>R1.7 у межах профілю</description>
+        <inputEntry id="R1_7_in1">
+          <text>"низький"</text>
+        </inputEntry>
+        <inputEntry id="R1_7_in2">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="R1_7_in3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R1_7_in4">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="R1_7_out1">
+          <text>"закрити як штатну"</text>
+        </outputEntry>
+        <outputEntry id="R1_7_out2">
+          <text>"низький"</text>
+        </outputEntry>
+        <outputEntry id="R1_7_out3">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="D2_Grounds" name="D2 Підстави доступу">
+    <decisionTable id="DT_D2_Grounds" hitPolicy="UNIQUE">
+      <input id="In_D2_Grounds_1" label="Файли поза правами, k">
+        <inputExpression id="InExpr_D2_Grounds_1" typeRef="number">
+          <text>outsideFiles</text>
+        </inputExpression>
+      </input>
+      <input id="In_D2_Grounds_2" label="Кадровий наказ">
+        <inputExpression id="InExpr_D2_Grounds_2" typeRef="boolean">
+          <text>hrOrder</text>
+        </inputExpression>
+      </input>
+      <input id="In_D2_Grounds_3" label="Попередні інциденти, h">
+        <inputExpression id="InExpr_D2_Grounds_3" typeRef="number">
+          <text>priorIncidents</text>
+        </inputExpression>
+      </input>
+      <input id="In_D2_Grounds_4" label="Зовнішній носій, f6 = 1">
+        <inputExpression id="InExpr_D2_Grounds_4" typeRef="boolean">
+          <text>dlpExternal</text>
+        </inputExpression>
+      </input>
+      <output id="Out_D2_Grounds_1" label="Підстави" name="grounds" typeRef="string" />
+      <output id="Out_D2_Grounds_2" label="Обтяжуючі ознаки" name="aggravating" typeRef="boolean" />
+      <rule id="R2_1">
+        <description>R2.1 усі файли в межах прав</description>
+        <inputEntry id="R2_1_in1">
+          <text>0</text>
+        </inputEntry>
+        <inputEntry id="R2_1_in2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R2_1_in3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R2_1_in4">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="R2_1_out1">
+          <text>"підстави наявні"</text>
+        </outputEntry>
+        <outputEntry id="R2_1_out2">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="R2_2">
+        <description>R2.2 є кадровий наказ</description>
+        <inputEntry id="R2_2_in1">
+          <text>&gt; 0</text>
+        </inputEntry>
+        <inputEntry id="R2_2_in2">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="R2_2_in3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="R2_2_in4">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="R2_2_out1">
+          <text>"потрібне уточнення"</text>
+        </outputEntry>
+        <outputEntry id="R2_2_out2">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="R2_3a">
+        <description>R2.3 повторний інцидент</description>
+        <inputEntry id="R2_3a_in1">
+          <text>&gt; 0</text>
+        </inputEntry>
+        <inputEntry id="R2_3a_in2">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="R2_3a_in3">
+          <text>&gt; 0</text>
+        </inputEntry>
+        <inputEntry id="R2_3a_in4">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="R2_3a_out1">
+          <text>"підстави відсутні"</text>
+        </outputEntry>
+        <outputEntry id="R2_3a_out2">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="R2_3b">
+        <description>R2.3 передача на носій</description>
+        <inputEntry id="R2_3b_in1">
+          <text>&gt; 0</text>
+        </inputEntry>
+        <inputEntry id="R2_3b_in2">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="R2_3b_in3">
+          <text>0</text>
+        </inputEntry>
+        <inputEntry id="R2_3b_in4">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="R2_3b_out1">
+          <text>"підстави відсутні"</text>
+        </outputEntry>
+        <outputEntry id="R2_3b_out2">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="R2_4">
+        <description>R2.4 без обтяжуючих ознак</description>
+        <inputEntry id="R2_4_in1">
+          <text>&gt; 0</text>
+        </inputEntry>
+        <inputEntry id="R2_4_in2">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="R2_4_in3">
+          <text>0</text>
+        </inputEntry>
+        <inputEntry id="R2_4_in4">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="R2_4_out1">
+          <text>"підстави відсутні"</text>
+        </outputEntry>
+        <outputEntry id="R2_4_out2">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="D3_Containment" name="D3 Контроль обмеження доступу">
+    <decisionTable id="DT_D3_Containment" hitPolicy="UNIQUE">
+      <input id="In_D3_Containment_1" label="Розбіжність прав">
+        <inputExpression id="InExpr_D3_Containment_1" typeRef="string">
+          <text>mismatch</text>
+        </inputExpression>
+      </input>
+      <input id="In_D3_Containment_2" label="Повтор, n &lt; Kmax">
+        <inputExpression id="InExpr_D3_Containment_2" typeRef="boolean">
+          <text>attempt &lt; maxAttempts</text>
+        </inputExpression>
+      </input>
+      <output id="Out_D3_Containment_1" label="Результат" name="result" typeRef="string" />
+      <rule id="R3_1">
+        <description>R3.1 розбіжності немає</description>
+        <inputEntry id="R3_1_in1">
+          <text>"немає"</text>
+        </inputEntry>
+        <inputEntry id="R3_1_in2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="R3_1_out1">
+          <text>"відповідає"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R3_2">
+        <description>R3.2 залишкові права, повтор</description>
+        <inputEntry id="R3_2_in1">
+          <text>"залишкові права"</text>
+        </inputEntry>
+        <inputEntry id="R3_2_in2">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="R3_2_out1">
+          <text>"повторити передачу"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R3_3">
+        <description>R3.3 залишкові права, ліміт</description>
+        <inputEntry id="R3_3_in1">
+          <text>"залишкові права"</text>
+        </inputEntry>
+        <inputEntry id="R3_3_in2">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="R3_3_out1">
+          <text>"ескалувати фахівцю"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R3_4">
+        <description>R3.4 надмірне обмеження</description>
+        <inputEntry id="R3_4_in1">
+          <text>"надмірне обмеження"</text>
+        </inputEntry>
+        <inputEntry id="R3_4_in2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="R3_4_out1">
+          <text>"ескалувати фахівцю"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_IBP4">
+      <dmndi:DMNShape id="DMNShape_D1_Significance" dmnElementRef="D1_Significance">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_D2_Grounds" dmnElementRef="D2_Grounds">
+        <dc:Bounds height="80" width="180" x="400" y="100" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_D3_Containment" dmnElementRef="D3_Containment">
+        <dc:Bounds height="80" width="180" x="640" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

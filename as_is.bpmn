@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_IBP2" targetNamespace="http://bpmn.io/schema/bpmn" exporter="ibp2_gen_bpmn.py" exporterVersion="1.0">
+  <bpmn:message id="Message_Alert" name="Первинне сповіщення" />
+  <bpmn:message id="Message_RightsReq" name="Запит фактичних повноважень" />
+  <bpmn:message id="Message_RightsData" name="Дані про фактичні повноваження" />
+  <bpmn:message id="Message_HeadNotice" name="Повідомлення про підтверджений інцидент" />
+  <bpmn:message id="Message_Decision" name="Рішення про обмеження доступу" />
+  <bpmn:message id="Message_Done" name="Підтвердження обмеження доступу" />
+  <bpmn:collaboration id="Collaboration_IncidentResponse">
+    <bpmn:participant id="Participant_Audit" name="Система аудиту документообігу" processRef="Process_Audit" />
+    <bpmn:participant id="Participant_IB" name="Служба ІБ" processRef="Process_IB" />
+    <bpmn:participant id="Participant_IAM" name="Система IAM" processRef="Process_IAM" />
+    <bpmn:participant id="Participant_Head" name="Підрозділ користувача" processRef="Process_Head" />
+    <bpmn:messageFlow id="MsgFlow_Alert" name="Первинне сповіщення" sourceRef="Task_Register" targetRef="Start_SOC" />
+    <bpmn:messageFlow id="MsgFlow_RightsReq" name="Запит фактичних повноважень" sourceRef="Task_RequestRights" targetRef="Start_IAM_Rights" />
+    <bpmn:messageFlow id="MsgFlow_RightsData" name="Дані про фактичні повноваження" sourceRef="Task_ProvideRights" targetRef="Catch_RightsData" />
+    <bpmn:messageFlow id="MsgFlow_HeadNotice" name="Повідомлення про підтверджений інцидент" sourceRef="Task_NotifyHead" targetRef="Start_Head" />
+    <bpmn:messageFlow id="MsgFlow_Decision" name="Рішення про обмеження доступу" sourceRef="Task_SendDecision" targetRef="Start_IAM_Restrict" />
+    <bpmn:messageFlow id="MsgFlow_Done" name="Підтвердження обмеження доступу" sourceRef="Task_Restrict" targetRef="Catch_RestrictDone" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Audit" isExecutable="false">
+    <bpmn:startEvent id="Start_Audit" name="Зафіксовано перегляд і копіювання документів іншого підрозділу">
+      <bpmn:documentation>Початкова подія процесу (ЛР 1, завдання 2): система аудиту зафіксувала звернення користувача до каталогу поза межами свого підрозділу.</bpmn:documentation>
+      <bpmn:outgoing>Flow_A1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Task_Register" name="Сформувати запис аудиту та сповіщення">
+      <bpmn:documentation>Крок 1 ЛР 1: реєстрація події доступу поза межами підрозділу.</bpmn:documentation>
+      <bpmn:incoming>Flow_A1</bpmn:incoming>
+      <bpmn:outgoing>Flow_A2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="End_Audit" name="Запис і сповіщення сформовано">
+      <bpmn:documentation>Завершення фрагмента процесу системи аудиту.</bpmn:documentation>
+      <bpmn:incoming>Flow_A2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_A1" sourceRef="Start_Audit" targetRef="Task_Register" />
+    <bpmn:sequenceFlow id="Flow_A2" sourceRef="Task_Register" targetRef="End_Audit" />
+  </bpmn:process>
+  <bpmn:process id="Process_IB" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_IB">
+      <bpmn:lane id="Lane_SOC" name="Черговий SOC">
+        <bpmn:flowNodeRef>Start_SOC</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Accept</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Assess</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Activity</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Escalate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_DocRoutine</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Routine</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_IB" name="Фахівець з ІБ">
+        <bpmn:flowNodeRef>Task_Analyze</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RequestRights</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Catch_RightsData</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CheckRights</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Grounds</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Classify</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_NotifyHead</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SendDecision</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Catch_RestrictDone</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Report</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Report</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CloseUnconf</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_NotConfirmed</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_SOC" name="Отримано первинне сповіщення">
+      <bpmn:documentation>Крок 2 ЛР 1: отримання сповіщення черговим SOC.</bpmn:documentation>
+      <bpmn:outgoing>Flow_S1</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Start_SOC_def" messageRef="Message_Alert" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_Accept" name="Прийняти сповіщення до розгляду">
+      <bpmn:documentation>Крок 2 ЛР 1: сповіщення прийнято до розгляду.</bpmn:documentation>
+      <bpmn:incoming>Flow_S1</bpmn:incoming>
+      <bpmn:outgoing>Flow_S2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Assess" name="Оцінити значущість події">
+      <bpmn:documentation>Крок 2 ЛР 1: попередня оцінка значущості події черговим SOC.</bpmn:documentation>
+      <bpmn:incoming>Flow_S2</bpmn:incoming>
+      <bpmn:outgoing>Flow_S3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Activity" name="Перевищує звичайну активність?">
+      <bpmn:documentation>Точка рішення 1 ЛР 1.</bpmn:documentation>
+      <bpmn:incoming>Flow_S3</bpmn:incoming>
+      <bpmn:outgoing>Flow_S4_yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_S4_no</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_Escalate" name="Передати сповіщення фахівцю з ІБ">
+      <bpmn:documentation>Уточнення У1: явна передача (ескалація) від чергового SOC до фахівця з ІБ; у ЛР 1 описана текстом точки рішення 1.</bpmn:documentation>
+      <bpmn:incoming>Flow_S4_yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_S6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_DocRoutine" name="Задокументувати подію як штатну">
+      <bpmn:documentation>Гілка «Ні» точки рішення 1 ЛР 1: подія документується як штатна.</bpmn:documentation>
+      <bpmn:incoming>Flow_S4_no</bpmn:incoming>
+      <bpmn:outgoing>Flow_S5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_Routine" name="Подію закрито як штатну">
+      <bpmn:documentation>Кінцевий результат: подію задокументовано як штатну.</bpmn:documentation>
+      <bpmn:incoming>Flow_S5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Task_Analyze" name="Проаналізувати журнали доступу та уточнити перелік файлів">
+      <bpmn:documentation>Крок 3 ЛР 1: аналіз журналів доступу (аудит, DLP), уточнення переліку переглянутих і скопійованих файлів.</bpmn:documentation>
+      <bpmn:incoming>Flow_S6</bpmn:incoming>
+      <bpmn:outgoing>Flow_I1</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_RequestRights" name="Запросити фактичні повноваження в IAM">
+      <bpmn:documentation>Крок 4 ЛР 1 (частина): запит даних про фактичні повноваження користувача.</bpmn:documentation>
+      <bpmn:incoming>Flow_I1</bpmn:incoming>
+      <bpmn:outgoing>Flow_I2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateCatchEvent id="Catch_RightsData" name="Отримано дані про повноваження">
+      <bpmn:documentation>Крок 4 ЛР 1 (частина): очікування даних від IAM.</bpmn:documentation>
+      <bpmn:incoming>Flow_I2</bpmn:incoming>
+      <bpmn:outgoing>Flow_I3</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Catch_RightsData_def" messageRef="Message_RightsData" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="Task_CheckRights" name="Перевірити повноваження та підстави доступу">
+      <bpmn:documentation>Крок 4 ЛР 1 (частина): перевірка наявності або відсутності правомірних підстав доступу.</bpmn:documentation>
+      <bpmn:incoming>Flow_I3</bpmn:incoming>
+      <bpmn:outgoing>Flow_I4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Grounds" name="Відсутність правомірних підстав підтверджено?">
+      <bpmn:documentation>Точка рішення 2 ЛР 1.</bpmn:documentation>
+      <bpmn:incoming>Flow_I4</bpmn:incoming>
+      <bpmn:outgoing>Flow_I5_yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_I5_no</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_Classify" name="Класифікувати інцидент і визначити критичність">
+      <bpmn:documentation>Крок 5 ЛР 1: класифікація події як інциденту ІБ, визначення рівня критичності.</bpmn:documentation>
+      <bpmn:incoming>Flow_I5_yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_I7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_NotifyHead" name="Повідомити керівника підрозділу про інцидент">
+      <bpmn:documentation>Крок 6 ЛР 1 (частина): керівник підрозділу отримує інформацію про підтверджений інцидент.</bpmn:documentation>
+      <bpmn:incoming>Flow_I7</bpmn:incoming>
+      <bpmn:outgoing>Flow_I8</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_SendDecision" name="Передати IAM рішення про обмеження доступу">
+      <bpmn:documentation>Крок 6 ЛР 1 (частина): IAM виконує обмеження за рішенням фахівця з ІБ.</bpmn:documentation>
+      <bpmn:incoming>Flow_I8</bpmn:incoming>
+      <bpmn:outgoing>Flow_I9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateCatchEvent id="Catch_RestrictDone" name="Обмеження доступу підтверджено">
+      <bpmn:documentation>Уточнення У2: явне повернення результату виконання обмеження від IAM.</bpmn:documentation>
+      <bpmn:incoming>Flow_I9</bpmn:incoming>
+      <bpmn:outgoing>Flow_I10</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Catch_RestrictDone_def" messageRef="Message_Done" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="Task_Report" name="Сформувати звіт про інцидент і вжиті заходи">
+      <bpmn:documentation>Крок 7 ЛР 1: формування звіту, фіксація вжитих заходів.</bpmn:documentation>
+      <bpmn:incoming>Flow_I10</bpmn:incoming>
+      <bpmn:outgoing>Flow_I11</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_Report" name="Інцидент закрито зі звітом">
+      <bpmn:documentation>Кінцевий результат: сформовано звіт, ужито заходів обмеження доступу.</bpmn:documentation>
+      <bpmn:incoming>Flow_I11</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Task_CloseUnconf" name="Закрити подію як непідтверджену">
+      <bpmn:documentation>Гілка «Ні» точки рішення 2 ЛР 1: правомірні підстави виявлено, інцидент не підтверджується, подія закривається.</bpmn:documentation>
+      <bpmn:incoming>Flow_I5_no</bpmn:incoming>
+      <bpmn:outgoing>Flow_I6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_NotConfirmed" name="Інцидент не підтверджено">
+      <bpmn:documentation>Кінцевий результат: інцидент не підтверджено, подію закрито.</bpmn:documentation>
+      <bpmn:incoming>Flow_I6</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_S1" sourceRef="Start_SOC" targetRef="Task_Accept" />
+    <bpmn:sequenceFlow id="Flow_S2" sourceRef="Task_Accept" targetRef="Task_Assess" />
+    <bpmn:sequenceFlow id="Flow_S3" sourceRef="Task_Assess" targetRef="Gateway_Activity" />
+    <bpmn:sequenceFlow id="Flow_S4_yes" name="Так" sourceRef="Gateway_Activity" targetRef="Task_Escalate">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Обсяг або характер дій перевищує звичайну робочу активність користувача</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_S4_no" name="Ні" sourceRef="Gateway_Activity" targetRef="Task_DocRoutine">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Перевищення звичайної робочої активності не виявлено</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_S5" sourceRef="Task_DocRoutine" targetRef="End_Routine" />
+    <bpmn:sequenceFlow id="Flow_S6" sourceRef="Task_Escalate" targetRef="Task_Analyze" />
+    <bpmn:sequenceFlow id="Flow_I1" sourceRef="Task_Analyze" targetRef="Task_RequestRights" />
+    <bpmn:sequenceFlow id="Flow_I2" sourceRef="Task_RequestRights" targetRef="Catch_RightsData" />
+    <bpmn:sequenceFlow id="Flow_I3" sourceRef="Catch_RightsData" targetRef="Task_CheckRights" />
+    <bpmn:sequenceFlow id="Flow_I4" sourceRef="Task_CheckRights" targetRef="Gateway_Grounds" />
+    <bpmn:sequenceFlow id="Flow_I5_yes" name="Так" sourceRef="Gateway_Grounds" targetRef="Task_Classify">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Відсутність правомірних підстав доступу підтверджено</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_I5_no" name="Ні" sourceRef="Gateway_Grounds" targetRef="Task_CloseUnconf">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Правомірні підстави доступу виявлено</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_I6" sourceRef="Task_CloseUnconf" targetRef="End_NotConfirmed" />
+    <bpmn:sequenceFlow id="Flow_I7" sourceRef="Task_Classify" targetRef="Task_NotifyHead" />
+    <bpmn:sequenceFlow id="Flow_I8" sourceRef="Task_NotifyHead" targetRef="Task_SendDecision" />
+    <bpmn:sequenceFlow id="Flow_I9" sourceRef="Task_SendDecision" targetRef="Catch_RestrictDone" />
+    <bpmn:sequenceFlow id="Flow_I10" sourceRef="Catch_RestrictDone" targetRef="Task_Report" />
+    <bpmn:sequenceFlow id="Flow_I11" sourceRef="Task_Report" targetRef="End_Report" />
+  </bpmn:process>
+  <bpmn:process id="Process_IAM" isExecutable="false">
+    <bpmn:startEvent id="Start_IAM_Rights" name="Отримано запит повноважень">
+      <bpmn:documentation>Початок обробки запиту повноважень системою IAM.</bpmn:documentation>
+      <bpmn:outgoing>Flow_M1</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Start_IAM_Rights_def" messageRef="Message_RightsReq" />
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Task_ProvideRights" name="Надати дані про фактичні повноваження">
+      <bpmn:documentation>Крок 4 ЛР 1 (частина): IAM надає дані про фактичні повноваження користувача.</bpmn:documentation>
+      <bpmn:incoming>Flow_M1</bpmn:incoming>
+      <bpmn:outgoing>Flow_M2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="End_IAM_Rights" name="Дані надано">
+      <bpmn:documentation>Завершення обробки запиту повноважень.</bpmn:documentation>
+      <bpmn:incoming>Flow_M2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="Start_IAM_Restrict" name="Отримано рішення про обмеження">
+      <bpmn:documentation>Початок виконання обмеження доступу.</bpmn:documentation>
+      <bpmn:outgoing>Flow_M3</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Start_IAM_Restrict_def" messageRef="Message_Decision" />
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Task_Restrict" name="Обмежити повноваження або заблокувати обліковий запис">
+      <bpmn:documentation>Крок 6 ЛР 1 (частина): IAM виконує обмеження повноважень або блокування облікового запису.</bpmn:documentation>
+      <bpmn:incoming>Flow_M3</bpmn:incoming>
+      <bpmn:outgoing>Flow_M4</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="End_IAM_Restrict" name="Обмеження виконано">
+      <bpmn:documentation>Завершення виконання обмеження.</bpmn:documentation>
+      <bpmn:incoming>Flow_M4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_M1" sourceRef="Start_IAM_Rights" targetRef="Task_ProvideRights" />
+    <bpmn:sequenceFlow id="Flow_M2" sourceRef="Task_ProvideRights" targetRef="End_IAM_Rights" />
+    <bpmn:sequenceFlow id="Flow_M3" sourceRef="Start_IAM_Restrict" targetRef="Task_Restrict" />
+    <bpmn:sequenceFlow id="Flow_M4" sourceRef="Task_Restrict" targetRef="End_IAM_Restrict" />
+  </bpmn:process>
+  <bpmn:process id="Process_Head" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Head">
+      <bpmn:lane id="Lane_Head" name="Керівник підрозділу">
+        <bpmn:flowNodeRef>Start_Head</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ApproveOrg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Head</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_Head" name="Отримано повідомлення про інцидент">
+      <bpmn:documentation>Початок участі керівника підрозділу.</bpmn:documentation>
+      <bpmn:outgoing>Flow_H1</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="Start_Head_def" messageRef="Message_HeadNotice" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_ApproveOrg" name="Погодити організаційні заходи щодо співробітника">
+      <bpmn:documentation>Крок 6 ЛР 1 (частина): керівник погоджує подальші організаційні заходи щодо співробітника.</bpmn:documentation>
+      <bpmn:incoming>Flow_H1</bpmn:incoming>
+      <bpmn:outgoing>Flow_H2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_Head" name="Заходи погоджено">
+      <bpmn:documentation>Завершення участі керівника підрозділу.</bpmn:documentation>
+      <bpmn:incoming>Flow_H2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_H1" sourceRef="Start_Head" targetRef="Task_ApproveOrg" />
+    <bpmn:sequenceFlow id="Flow_H2" sourceRef="Task_ApproveOrg" targetRef="End_Head" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_IncidentResponse">
+      <bpmndi:BPMNShape id="Participant_Audit_di" bpmnElement="Participant_Audit" isHorizontal="true">
+        <dc:Bounds x="160" y="30" width="2440" height="170" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_IB_di" bpmnElement="Participant_IB" isHorizontal="true">
+        <dc:Bounds x="160" y="280" width="2440" height="500" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_IAM_di" bpmnElement="Participant_IAM" isHorizontal="true">
+        <dc:Bounds x="160" y="860" width="2440" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Head_di" bpmnElement="Participant_Head" isHorizontal="true">
+        <dc:Bounds x="160" y="1090" width="2440" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_SOC_di" bpmnElement="Lane_SOC" isHorizontal="true">
+        <dc:Bounds x="190" y="280" width="2410" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_IB_di" bpmnElement="Lane_IB" isHorizontal="true">
+        <dc:Bounds x="190" y="530" width="2410" height="250" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Head_di" bpmnElement="Lane_Head" isHorizontal="true">
+        <dc:Bounds x="190" y="1090" width="2410" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_Audit_di" bpmnElement="Start_Audit">
+        <dc:Bounds x="232" y="72" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="195" y="112" width="110" height="60" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Register_di" bpmnElement="Task_Register">
+        <dc:Bounds x="310" y="50" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Audit_di" bpmnElement="End_Audit">
+        <dc:Bounds x="507" y="72" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="465" y="112" width="120" height="44" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_SOC_di" bpmnElement="Start_SOC">
+        <dc:Bounds x="367" y="437" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="325" y="477" width="120" height="44" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Accept_di" bpmnElement="Task_Accept">
+        <dc:Bounds x="445" y="415" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Assess_di" bpmnElement="Task_Assess">
+        <dc:Bounds x="630" y="415" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Activity_di" bpmnElement="Gateway_Activity" isMarkerVisible="true">
+        <dc:Bounds x="820" y="430" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="775" y="482" width="140" height="34" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Escalate_di" bpmnElement="Task_Escalate">
+        <dc:Bounds x="930" y="415" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DocRoutine_di" bpmnElement="Task_DocRoutine">
+        <dc:Bounds x="770" y="295" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Routine_di" bpmnElement="End_Routine">
+        <dc:Bounds x="967" y="317" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="925" y="357" width="120" height="34" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Analyze_di" bpmnElement="Task_Analyze">
+        <dc:Bounds x="930" y="665" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestRights_di" bpmnElement="Task_RequestRights">
+        <dc:Bounds x="1110" y="665" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_RightsData_di" bpmnElement="Catch_RightsData">
+        <dc:Bounds x="1292" y="687" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1260" y="636" width="100" height="44" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CheckRights_di" bpmnElement="Task_CheckRights">
+        <dc:Bounds x="1370" y="665" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Grounds_di" bpmnElement="Gateway_Grounds" isMarkerVisible="true">
+        <dc:Bounds x="1560" y="680" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1510" y="732" width="150" height="50" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Classify_di" bpmnElement="Task_Classify">
+        <dc:Bounds x="1670" y="665" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NotifyHead_di" bpmnElement="Task_NotifyHead">
+        <dc:Bounds x="1850" y="665" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendDecision_di" bpmnElement="Task_SendDecision">
+        <dc:Bounds x="2030" y="665" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_RestrictDone_di" bpmnElement="Catch_RestrictDone">
+        <dc:Bounds x="2212" y="687" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2180" y="636" width="100" height="44" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Report_di" bpmnElement="Task_Report">
+        <dc:Bounds x="2290" y="665" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Report_di" bpmnElement="End_Report">
+        <dc:Bounds x="2487" y="687" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2445" y="727" width="120" height="34" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CloseUnconf_di" bpmnElement="Task_CloseUnconf">
+        <dc:Bounds x="1510" y="545" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_NotConfirmed_di" bpmnElement="End_NotConfirmed">
+        <dc:Bounds x="1707" y="567" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1665" y="607" width="120" height="34" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_IAM_Rights_di" bpmnElement="Start_IAM_Rights">
+        <dc:Bounds x="1167" y="897" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1045" y="895" width="118" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ProvideRights_di" bpmnElement="Task_ProvideRights">
+        <dc:Bounds x="1235" y="875" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_IAM_Rights_di" bpmnElement="End_IAM_Rights">
+        <dc:Bounds x="1427" y="897" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1385" y="937" width="120" height="30" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_IAM_Restrict_di" bpmnElement="Start_IAM_Restrict">
+        <dc:Bounds x="2087" y="897" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1965" y="895" width="118" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Restrict_di" bpmnElement="Task_Restrict">
+        <dc:Bounds x="2155" y="875" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_IAM_Restrict_di" bpmnElement="End_IAM_Restrict">
+        <dc:Bounds x="2347" y="897" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2305" y="937" width="120" height="30" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_Head_di" bpmnElement="Start_Head">
+        <dc:Bounds x="1907" y="1127" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1865" y="1167" width="120" height="44" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApproveOrg_di" bpmnElement="Task_ApproveOrg">
+        <dc:Bounds x="1985" y="1105" width="190" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Head_di" bpmnElement="End_Head">
+        <dc:Bounds x="2212" y="1127" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2170" y="1167" width="120" height="30" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_A1_di" bpmnElement="Flow_A1">
+        <di:waypoint x="268" y="90" />
+        <di:waypoint x="310" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_A2_di" bpmnElement="Flow_A2">
+        <di:waypoint x="460" y="90" />
+        <di:waypoint x="507" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_S1_di" bpmnElement="Flow_S1">
+        <di:waypoint x="403" y="455" />
+        <di:waypoint x="445" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_S2_di" bpmnElement="Flow_S2">
+        <di:waypoint x="595" y="455" />
+        <di:waypoint x="630" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_S3_di" bpmnElement="Flow_S3">
+        <di:waypoint x="780" y="455" />
+        <di:waypoint x="820" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_S4_yes_di" bpmnElement="Flow_S4_yes">
+        <di:waypoint x="870" y="455" />
+        <di:waypoint x="930" y="455" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="883" y="436" width="30" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_S4_no_di" bpmnElement="Flow_S4_no">
+        <di:waypoint x="845" y="430" />
+        <di:waypoint x="845" y="375" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="852" y="395" width="30" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_S5_di" bpmnElement="Flow_S5">
+        <di:waypoint x="920" y="335" />
+        <di:waypoint x="967" y="335" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_S6_di" bpmnElement="Flow_S6">
+        <di:waypoint x="1005" y="495" />
+        <di:waypoint x="1005" y="665" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I1_di" bpmnElement="Flow_I1">
+        <di:waypoint x="1080" y="705" />
+        <di:waypoint x="1110" y="705" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I2_di" bpmnElement="Flow_I2">
+        <di:waypoint x="1260" y="705" />
+        <di:waypoint x="1292" y="705" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I3_di" bpmnElement="Flow_I3">
+        <di:waypoint x="1328" y="705" />
+        <di:waypoint x="1370" y="705" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I4_di" bpmnElement="Flow_I4">
+        <di:waypoint x="1520" y="705" />
+        <di:waypoint x="1560" y="705" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I5_yes_di" bpmnElement="Flow_I5_yes">
+        <di:waypoint x="1610" y="705" />
+        <di:waypoint x="1670" y="705" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1618" y="687" width="30" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I5_no_di" bpmnElement="Flow_I5_no">
+        <di:waypoint x="1585" y="680" />
+        <di:waypoint x="1585" y="625" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1592" y="645" width="30" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I6_di" bpmnElement="Flow_I6">
+        <di:waypoint x="1660" y="585" />
+        <di:waypoint x="1707" y="585" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I7_di" bpmnElement="Flow_I7">
+        <di:waypoint x="1820" y="705" />
+        <di:waypoint x="1850" y="705" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I8_di" bpmnElement="Flow_I8">
+        <di:waypoint x="2000" y="705" />
+        <di:waypoint x="2030" y="705" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I9_di" bpmnElement="Flow_I9">
+        <di:waypoint x="2180" y="705" />
+        <di:waypoint x="2212" y="705" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I10_di" bpmnElement="Flow_I10">
+        <di:waypoint x="2248" y="705" />
+        <di:waypoint x="2290" y="705" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_I11_di" bpmnElement="Flow_I11">
+        <di:waypoint x="2440" y="705" />
+        <di:waypoint x="2487" y="705" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M1_di" bpmnElement="Flow_M1">
+        <di:waypoint x="1203" y="915" />
+        <di:waypoint x="1235" y="915" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M2_di" bpmnElement="Flow_M2">
+        <di:waypoint x="1385" y="915" />
+        <di:waypoint x="1427" y="915" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M3_di" bpmnElement="Flow_M3">
+        <di:waypoint x="2123" y="915" />
+        <di:waypoint x="2155" y="915" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_M4_di" bpmnElement="Flow_M4">
+        <di:waypoint x="2305" y="915" />
+        <di:waypoint x="2347" y="915" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_H1_di" bpmnElement="Flow_H1">
+        <di:waypoint x="1943" y="1145" />
+        <di:waypoint x="1985" y="1145" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_H2_di" bpmnElement="Flow_H2">
+        <di:waypoint x="2175" y="1145" />
+        <di:waypoint x="2212" y="1145" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_Alert_di" bpmnElement="MsgFlow_Alert">
+        <di:waypoint x="385" y="130" />
+        <di:waypoint x="385" y="437" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="392" y="222" width="130" height="34" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_RightsReq_di" bpmnElement="MsgFlow_RightsReq">
+        <di:waypoint x="1185" y="745" />
+        <di:waypoint x="1185" y="897" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1192" y="790" width="112" height="48" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_RightsData_di" bpmnElement="MsgFlow_RightsData">
+        <di:waypoint x="1310" y="875" />
+        <di:waypoint x="1310" y="723" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1317" y="793" width="138" height="34" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_HeadNotice_di" bpmnElement="MsgFlow_HeadNotice">
+        <di:waypoint x="1925" y="745" />
+        <di:waypoint x="1925" y="1127" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1932" y="790" width="136" height="48" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_Decision_di" bpmnElement="MsgFlow_Decision">
+        <di:waypoint x="2105" y="745" />
+        <di:waypoint x="2105" y="897" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2112" y="790" width="112" height="48" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MsgFlow_Done_di" bpmnElement="MsgFlow_Done">
+        <di:waypoint x="2230" y="875" />
+        <di:waypoint x="2230" y="723" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2237" y="793" width="140" height="34" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
