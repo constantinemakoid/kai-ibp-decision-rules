@@ -26,14 +26,16 @@ def d1(level, over_profile, no_grant, dlp):
     if level == "середній":
         if dlp:
             return "R1.2", ESC, "високий", False
-        return "R1.3", ESC, "середній", True
+        if over_profile and no_grant:
+            return "R1.3", ESC, "середній", False
+        return "R1.4", ESC, "середній", True
     if dlp:
-        return "R1.4", ESC, "середній", False
-    if over_profile and no_grant:
         return "R1.5", ESC, "середній", False
+    if over_profile and no_grant:
+        return "R1.6", ESC, "середній", False
     if over_profile:
-        return "R1.6", CLOSE, "низький", True
-    return "R1.7", CLOSE, "низький", True
+        return "R1.7", CLOSE, "низький", True
+    return "R1.8", CLOSE, "низький", True
 
 
 def d1_final(recommendation, override_allowed, soc_override):
@@ -43,16 +45,18 @@ def d1_final(recommendation, override_allowed, soc_override):
 
 
 def d2(outside, hr_order, prior, dlp):
-    if outside == 0:
-        return "R2.1", PRESENT, False
     aggravating = prior > 0 or dlp
-    if hr_order:
+    if outside == 0:
         if aggravating:
             return "R2.2", CLARIFY, True
-        return "R2.3", CLARIFY, False
+        return "R2.1", PRESENT, False
+    if hr_order:
+        if aggravating:
+            return "R2.3", CLARIFY, True
+        return "R2.4", CLARIFY, False
     if aggravating:
-        return "R2.4", ABSENT, True
-    return "R2.5", ABSENT, False
+        return "R2.5", ABSENT, True
+    return "R2.6", ABSENT, False
 
 
 def d3(mismatch, attempt, k_max=K_MAX):

@@ -19,6 +19,8 @@ EVENTS = [
     dict(zip(FIELDS, ("E", 20, 30, 10, 2, 0, False, False, True, False))),
     dict(zip(FIELDS, ("F", 45, 40, 10, 3, 0, False, False, False, False))),
     dict(zip(FIELDS, ("G", 25, 30, 10, 0, 1, False, False, False, True))),
+    dict(zip(FIELDS, ("H", 70, 30, 20, 10, 2, True, True, False, True))),
+    dict(zip(FIELDS, ("I", 30, 35, 10, 12, 1, True, False, True, False))),
 ]
 GROUNDS = [
     ("A", 240, False, 0),
@@ -27,6 +29,7 @@ GROUNDS = [
     ("E", 20, False, 2),
     ("F", 0, False, 0),
     ("G", 25, True, 1),
+    ("I", 0, False, 0),
 ]
 CONTAINMENT = [
     ("S1", "немає", 1),
@@ -52,6 +55,32 @@ def d2_ctx(k, hr, h, dlp):
 
 def d3_ctx(mismatch, attempt):
     return {"mismatch": mismatch, "attempt": attempt, "maxAttempts": rules.K_MAX}
+
+
+RANK = {"низький": 0, "середній": 1, "високий": 2}
+SEVERITY = {"закрити як штатну": 0, "ескалувати": 1}
+
+
+def check_invariants(coverage):
+    d1 = {tuple(c["ctx"].values()): c["out"] for c in coverage["D1_Significance"]}
+    d2 = [c for c in coverage["D2_Grounds"]]
+    checks = {
+        "I1": [k for k, o in d1.items() if k[1] and k[2] and o["overrideAllowed"]],
+        "I2": [k for k, o in d1.items() if k[3] and o["overrideAllowed"]],
+        "I3": [k for k, o in d1.items() if (k[1] and k[2] or k[3]) and o["recommendation"] != rules.ESC],
+        "I4": [],
+        "I5": [c["ctx"] for c in d2 if (c["ctx"]["priorIncidents"] > 0 or c["ctx"]["dlpExternal"])
+               and not c["out"]["aggravating"]],
+        "I6": [c["ctx"] for c in d2 if c["out"]["aggravating"] and c["out"]["grounds"] == rules.PRESENT],
+    }
+    for k, o in d1.items():
+        for k2, o2 in d1.items():
+            if k2[1:] == k[1:] and RANK[k2[0]] > RANK[k[0]]:
+                if SEVERITY[o2["recommendation"]] < SEVERITY[o["recommendation"]] or (
+                        o2["overrideAllowed"] and not o["overrideAllowed"]):
+                    checks["I4"].append((k, k2))
+    return {k: dict(checked=len(d1) if k.startswith(("I1", "I2", "I3", "I4")) else len(d2), violations=len(v))
+            for k, v in checks.items()}
 
 
 def main():
@@ -122,6 +151,8 @@ def main():
         exhaustive[dec] = stat
         coverage[dec] = cov
 
+    invariants = check_invariants(coverage)
+
     with open("cases.json", "w", encoding="utf-8") as fh:
         json.dump(cases, fh, ensure_ascii=False)
     js = json.loads(subprocess.run(["node", "eval_dmn.mjs", DMN, "cases.json"], capture_output=True, text=True,
@@ -132,7 +163,7 @@ def main():
         py[c["id"]] = out
     js_diff = [x["id"] for x in js if x.get("result") != py[x["id"]]]
     boundary = [(r, rules.risk_level(r)) for r in BOUNDARY]
-    res = dict(d1=d1_rows, d2=d2_rows, d3=d3_rows, exhaustive=exhaustive, coverage=coverage,
+    res = dict(d1=d1_rows, d2=d2_rows, d3=d3_rows, exhaustive=exhaustive, coverage=coverage, invariants=invariants,
                js_cases=len(js), js_diff=js_diff, boundary=boundary,
                params=dict(R_MED=rules.R_MED, R_HIGH=rules.R_HIGH, K_MAX=rules.K_MAX))
     with open("scenario_results.json", "w", encoding="utf-8") as fh:
@@ -141,6 +172,7 @@ def main():
         for row in res[k]:
             print(k, row["id"], row["ref_rule"], row["dmn_rule"], row["ref"], row["dmn"], row.get("final", ""))
     print(json.dumps(exhaustive, ensure_ascii=False))
+    print(json.dumps(invariants, ensure_ascii=False))
     print("js", len(js), "diff", js_diff, boundary)
 
 

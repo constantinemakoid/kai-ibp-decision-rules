@@ -151,6 +151,9 @@ def geometry(model):
                         or flow_shapes[a][1] + flow_shapes[a][3] <= flow_shapes[b][1]
                         or flow_shapes[b][1] + flow_shapes[b][3] <= flow_shapes[a][1])]
     ends = {f[0]: (f[1], f[2]) for f in model.seq + model.msg}
+    for task in model.root.iter():
+        for da in task.findall(B + "dataInputAssociation"):
+            ends[da.get("id")] = (da.findtext(B + "sourceRef"), task.get("id"))
     nonortho, through, crossings = 0, [], []
     segs = {}
     for eid, pts in edges.items():

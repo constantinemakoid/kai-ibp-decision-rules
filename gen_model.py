@@ -71,9 +71,9 @@ node("Task_Enrich", "serviceTask", "Зібрати контекст: DLP, IAM, �
 node("Task_Score", "serviceTask", "Оцінити ризик R і визначити рівень", P, PL, 895, 830,
      "Обчислення R і ознак f1...f6; рівень за порогами Rсер і Rвис.")
 node("Rule_D1", "businessRuleTask", "Застосувати правила D1: значущість події", P, PL, 1085, 830,
-     "Таблиця рішень D1_Significance, правила R1.1...R1.7.", decision=("D1_Significance", "d1"))
+     "Таблиця рішень D1_Significance, правила R1.1...R1.8.", decision=("D1_Significance", "d1"))
 node("Task_Review", "userTask", "Підтвердити рекомендацію D1 або змінити з обґрунтуванням", P, SOC, 1085, 450,
-     "Рівень B: зміна рекомендації можлива лише при d1.overrideAllowed = true; результат d1Final.")
+     "Рівень B, правило R1.9: зміна рекомендації можлива лише при d1.overrideAllowed = true; результат d1Final.")
 node("Gateway_Activity", "exclusiveGateway", "Рішення D1: ескалувати?", P, SOC, 1225, 450,
      "Точка рішення D1.", label=(1165, 482, 120, 34))
 node("Task_DocRoutine", "userTask", "Закрити картку як штатну подію", P, SOC, 1225, 335,
@@ -83,9 +83,9 @@ node("End_Routine", "endEvent", "Подію закрито як штатну", P
 node("Task_Evidence", "serviceTask", "Сформувати пакет доказів і призначити фахівцю з ІБ", P, PL, 1365, 830,
      "Обчислення k, h для D2.")
 node("Rule_D2", "businessRuleTask", "Застосувати правила D2: підстави доступу", P, PL, 1555, 830,
-     "Таблиця рішень D2_Grounds, правила R2.1...R2.5.", decision=("D2_Grounds", "d2"))
+     "Таблиця рішень D2_Grounds, правила R2.1...R2.6.", decision=("D2_Grounds", "d2"))
 node("Task_CheckGrounds", "userTask", "Перевірити пакет доказів і рекомендацію D2", P, IB, 1555, 680,
-     "Рівень B, правило R2.6: фахівець з ІБ підтверджує або змінює рекомендацію; при d2.aggravating = true "
+     "Рівень B, правило R2.7: фахівець з ІБ підтверджує або змінює рекомендацію; при d2.aggravating = true "
      "результат «підстави наявні» лише з документальним підтвердженням керівника; результат d2Final.")
 node("Gateway_Grounds", "exclusiveGateway", "Рішення D2: підстави відсутні?", P, IB, 1695, 680,
      "Точка рішення D2.", label=(1615, 722, 160, 28))
@@ -139,6 +139,25 @@ node("Task_ApproveOrg", "userTask", "Погодити організаційні
      2135, 1425, "Без змін.", w=190)
 node("End_Head", "endEvent", "Рішення керівника передано", "Process_Head", "Lane_Head", 3180, 1425,
      "Рішення керівника повертається до служби ІБ.", label=(3125, 1447, 110, 34), msg="Message_HeadDecision")
+
+DS = [
+    ("DS_Registry", "Реєстр каталогів", 450, 975, (410, 1003, 80, 28)),
+    ("DS_AuditLog", "Журнал аудиту і DLP", 560, 975, (520, 1003, 80, 28)),
+    ("DS_HR", "Кадрові дані", 715, 975, (678, 1003, 74, 28)),
+    ("DS_History", "Історія журналу аудиту", 895, 975, (850, 1003, 90, 28)),
+    ("DS_AuditLog2", "Журнал аудиту і DLP", 1330, 975, (1292, 1003, 76, 28)),
+    ("DS_Cards", "Картки інцидентів", 1410, 975, (1376, 1003, 70, 28)),
+    ("DS_IAM", "Ефективні права IAM", 2485, 975, (2440, 1003, 90, 28)),
+]
+DA = [
+    ("DA_Registry", "DS_Registry", "Task_Enrich", [(450, 950), (450, 900), (640, 900), (640, 870)]),
+    ("DA_AuditLog", "DS_AuditLog", "Task_Enrich", [(585, 975), (655, 975), (655, 870)]),
+    ("DA_HR", "DS_HR", "Task_Enrich", [(715, 950), (715, 870)]),
+    ("DA_History", "DS_History", "Task_Score", [(895, 950), (895, 870)]),
+    ("DA_AuditLog2", "DS_AuditLog2", "Task_Evidence", [(1330, 950), (1330, 870)]),
+    ("DA_Cards", "DS_Cards", "Task_Evidence", [(1410, 950), (1410, 870)]),
+    ("DA_IAM", "DS_IAM", "Task_VerifyRights", [(2485, 950), (2485, 870)]),
+]
 
 F = []
 
@@ -262,9 +281,20 @@ def build():
             for f in F:
                 if f["src"] == n["id"]:
                     out.append(f'      <bpmn:outgoing>{f["id"]}</bpmn:outgoing>')
+            das = [d for d in DA if d[2] == n["id"]]
+            if das:
+                out.append(f'      <bpmn:property id="Property_{n["id"]}" name="__targetRef_placeholder" />')
+            for did, src, _, _ in das:
+                out.append(f'      <bpmn:dataInputAssociation id="{did}">')
+                out.append(f'        <bpmn:sourceRef>{src}</bpmn:sourceRef>')
+                out.append(f'        <bpmn:targetRef>Property_{n["id"]}</bpmn:targetRef>')
+                out.append('      </bpmn:dataInputAssociation>')
             if n["msg"]:
                 out.append(f'      <bpmn:messageEventDefinition id="{n["id"]}_def" messageRef="{n["msg"]}" />')
             out.append(f'    </bpmn:{n["kind"]}>')
+        if proc == P:
+            for dsid, dsname, _, _, _ in DS:
+                out.append(f'    <bpmn:dataStoreReference id="{dsid}" name="{a(dsname)}" />')
         ids = {n["id"] for n in N if n["proc"] == proc}
         for f in F:
             if f["src"] not in ids:
@@ -311,8 +341,12 @@ def build():
             out.append('        </bpmndi:BPMNLabel>')
         out.append('      </bpmndi:BPMNEdge>')
 
+    for dsid, _, cx, cy, lab in DS:
+        shape(dsid, cx - 25, cy - 25, 50, 50, "", lab)
     for f in F:
         edge(f["id"], f["pts"], f["label"])
+    for did, _, _, pts in DA:
+        edge(did, pts)
     for mid, _, _, _, pts, lab in M:
         edge(mid, pts, lab)
     out.append('    </bpmndi:BPMNPlane>')
@@ -324,4 +358,4 @@ def build():
 if __name__ == "__main__":
     with open(OUT, "w", encoding="utf-8") as fh:
         fh.write(build())
-    print(OUT, len(N), "nodes", len(F), "sequence flows", len(M), "message flows")
+    print(OUT, len(N), "nodes", len(F), "sequence flows", len(M), "message flows", len(DS), "data stores")

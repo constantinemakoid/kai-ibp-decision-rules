@@ -31,13 +31,13 @@
    "over": true,
    "no_grant": false,
    "dlp": false,
-   "ref_rule": "R1.6",
+   "ref_rule": "R1.7",
    "ref": [
     "закрити як штатну",
     "низький",
     true
    ],
-   "dmn_rule": "R1.6",
+   "dmn_rule": "R1.7",
    "dmn": {
     "recommendation": "закрити як штатну",
     "priority": "низький",
@@ -58,13 +58,13 @@
    "ref": [
     "ескалувати",
     "середній",
-    true
+    false
    ],
    "dmn_rule": "R1.3",
    "dmn": {
     "recommendation": "ескалувати",
     "priority": "середній",
-    "overrideAllowed": true
+    "overrideAllowed": false
    },
    "soc_override": false,
    "final": "ескалувати"
@@ -100,29 +100,6 @@
    "over": false,
    "no_grant": true,
    "dlp": true,
-   "ref_rule": "R1.4",
-   "ref": [
-    "ескалувати",
-    "середній",
-    false
-   ],
-   "dmn_rule": "R1.4",
-   "dmn": {
-    "recommendation": "ескалувати",
-    "priority": "середній",
-    "overrideAllowed": false
-   },
-   "soc_override": false,
-   "final": "ескалувати"
-  },
-  {
-   "id": "F",
-   "z": 0.5,
-   "R": 26.0,
-   "level": "низький",
-   "over": true,
-   "no_grant": true,
-   "dlp": false,
    "ref_rule": "R1.5",
    "ref": [
     "ескалувати",
@@ -139,6 +116,29 @@
    "final": "ескалувати"
   },
   {
+   "id": "F",
+   "z": 0.5,
+   "R": 26.0,
+   "level": "низький",
+   "over": true,
+   "no_grant": true,
+   "dlp": false,
+   "ref_rule": "R1.6",
+   "ref": [
+    "ескалувати",
+    "середній",
+    false
+   ],
+   "dmn_rule": "R1.6",
+   "dmn": {
+    "recommendation": "ескалувати",
+    "priority": "середній",
+    "overrideAllowed": false
+   },
+   "soc_override": false,
+   "final": "ескалувати"
+  },
+  {
    "id": "G",
    "z": -0.5,
    "R": 30.000000000000004,
@@ -146,19 +146,65 @@
    "over": false,
    "no_grant": true,
    "dlp": false,
-   "ref_rule": "R1.7",
+   "ref_rule": "R1.8",
    "ref": [
     "закрити як штатну",
     "низький",
     true
    ],
-   "dmn_rule": "R1.7",
+   "dmn_rule": "R1.8",
    "dmn": {
     "recommendation": "закрити як штатну",
     "priority": "низький",
     "overrideAllowed": true
    },
    "soc_override": true,
+   "final": "ескалувати"
+  },
+  {
+   "id": "H",
+   "z": 2.0,
+   "R": 47.14285714285714,
+   "level": "середній",
+   "over": true,
+   "no_grant": false,
+   "dlp": false,
+   "ref_rule": "R1.4",
+   "ref": [
+    "ескалувати",
+    "середній",
+    true
+   ],
+   "dmn_rule": "R1.4",
+   "dmn": {
+    "recommendation": "ескалувати",
+    "priority": "середній",
+    "overrideAllowed": true
+   },
+   "soc_override": true,
+   "final": "закрити як штатну"
+  },
+  {
+   "id": "I",
+   "z": -0.5,
+   "R": 26.0,
+   "level": "низький",
+   "over": false,
+   "no_grant": false,
+   "dlp": true,
+   "ref_rule": "R1.5",
+   "ref": [
+    "ескалувати",
+    "середній",
+    false
+   ],
+   "dmn_rule": "R1.5",
+   "dmn": {
+    "recommendation": "ескалувати",
+    "priority": "середній",
+    "overrideAllowed": false
+   },
+   "soc_override": false,
    "final": "ескалувати"
   }
  ],
@@ -169,12 +215,12 @@
    "hr": false,
    "h": 0,
    "dlp": false,
-   "ref_rule": "R2.5",
+   "ref_rule": "R2.6",
    "ref": [
     "підстави відсутні",
     false
    ],
-   "dmn_rule": "R2.5",
+   "dmn_rule": "R2.6",
    "dmn": {
     "grounds": "підстави відсутні",
     "aggravating": false
@@ -186,12 +232,12 @@
    "hr": true,
    "h": 0,
    "dlp": false,
-   "ref_rule": "R2.3",
+   "ref_rule": "R2.4",
    "ref": [
     "потрібне уточнення",
     false
    ],
-   "dmn_rule": "R2.3",
+   "dmn_rule": "R2.4",
    "dmn": {
     "grounds": "потрібне уточнення",
     "aggravating": false
@@ -203,12 +249,12 @@
    "hr": false,
    "h": 0,
    "dlp": true,
-   "ref_rule": "R2.4",
+   "ref_rule": "R2.5",
    "ref": [
     "підстави відсутні",
     true
    ],
-   "dmn_rule": "R2.4",
+   "dmn_rule": "R2.5",
    "dmn": {
     "grounds": "підстави відсутні",
     "aggravating": true
@@ -220,12 +266,12 @@
    "hr": false,
    "h": 2,
    "dlp": true,
-   "ref_rule": "R2.4",
+   "ref_rule": "R2.5",
    "ref": [
     "підстави відсутні",
     true
    ],
-   "dmn_rule": "R2.4",
+   "dmn_rule": "R2.5",
    "dmn": {
     "grounds": "підстави відсутні",
     "aggravating": true
@@ -254,6 +300,23 @@
    "hr": true,
    "h": 1,
    "dlp": false,
+   "ref_rule": "R2.3",
+   "ref": [
+    "потрібне уточнення",
+    true
+   ],
+   "dmn_rule": "R2.3",
+   "dmn": {
+    "grounds": "потрібне уточнення",
+    "aggravating": true
+   }
+  },
+  {
+   "id": "I",
+   "k": 0,
+   "hr": false,
+   "h": 0,
+   "dlp": true,
    "ref_rule": "R2.2",
    "ref": [
     "потрібне уточнення",
@@ -344,16 +407,16 @@
    "no_rule": 0,
    "multi_rule": 0,
    "ref_mismatch": 0,
-   "rules_used": 7,
-   "rules_total": 7
+   "rules_used": 9,
+   "rules_total": 9
   },
   "D2_Grounds": {
    "combinations": 16,
    "no_rule": 0,
    "multi_rule": 0,
    "ref_mismatch": 0,
-   "rules_used": 7,
-   "rules_total": 7
+   "rules_used": 9,
+   "rules_total": 9
   },
   "D3_Containment": {
    "combinations": 12,
@@ -503,7 +566,7 @@
     "out": {
      "recommendation": "ескалувати",
      "priority": "середній",
-     "overrideAllowed": true
+     "overrideAllowed": false
     }
    },
    {
@@ -526,81 +589,81 @@
      "overProfile": true,
      "noGrant": false,
      "dlpExternal": false
-    },
-    "rule": "R1.3",
-    "out": {
-     "recommendation": "ескалувати",
-     "priority": "середній",
-     "overrideAllowed": true
-    }
-   },
-   {
-    "ctx": {
-     "riskLevel": "середній",
-     "overProfile": false,
-     "noGrant": true,
-     "dlpExternal": true
-    },
-    "rule": "R1.2",
-    "out": {
-     "recommendation": "ескалувати",
-     "priority": "високий",
-     "overrideAllowed": false
-    }
-   },
-   {
-    "ctx": {
-     "riskLevel": "середній",
-     "overProfile": false,
-     "noGrant": true,
-     "dlpExternal": false
-    },
-    "rule": "R1.3",
-    "out": {
-     "recommendation": "ескалувати",
-     "priority": "середній",
-     "overrideAllowed": true
-    }
-   },
-   {
-    "ctx": {
-     "riskLevel": "середній",
-     "overProfile": false,
-     "noGrant": false,
-     "dlpExternal": true
-    },
-    "rule": "R1.2",
-    "out": {
-     "recommendation": "ескалувати",
-     "priority": "високий",
-     "overrideAllowed": false
-    }
-   },
-   {
-    "ctx": {
-     "riskLevel": "середній",
-     "overProfile": false,
-     "noGrant": false,
-     "dlpExternal": false
-    },
-    "rule": "R1.3",
-    "out": {
-     "recommendation": "ескалувати",
-     "priority": "середній",
-     "overrideAllowed": true
-    }
-   },
-   {
-    "ctx": {
-     "riskLevel": "низький",
-     "overProfile": true,
-     "noGrant": true,
-     "dlpExternal": true
     },
     "rule": "R1.4",
     "out": {
      "recommendation": "ескалувати",
      "priority": "середній",
+     "overrideAllowed": true
+    }
+   },
+   {
+    "ctx": {
+     "riskLevel": "середній",
+     "overProfile": false,
+     "noGrant": true,
+     "dlpExternal": true
+    },
+    "rule": "R1.2",
+    "out": {
+     "recommendation": "ескалувати",
+     "priority": "високий",
+     "overrideAllowed": false
+    }
+   },
+   {
+    "ctx": {
+     "riskLevel": "середній",
+     "overProfile": false,
+     "noGrant": true,
+     "dlpExternal": false
+    },
+    "rule": "R1.4",
+    "out": {
+     "recommendation": "ескалувати",
+     "priority": "середній",
+     "overrideAllowed": true
+    }
+   },
+   {
+    "ctx": {
+     "riskLevel": "середній",
+     "overProfile": false,
+     "noGrant": false,
+     "dlpExternal": true
+    },
+    "rule": "R1.2",
+    "out": {
+     "recommendation": "ескалувати",
+     "priority": "високий",
+     "overrideAllowed": false
+    }
+   },
+   {
+    "ctx": {
+     "riskLevel": "середній",
+     "overProfile": false,
+     "noGrant": false,
+     "dlpExternal": false
+    },
+    "rule": "R1.4",
+    "out": {
+     "recommendation": "ескалувати",
+     "priority": "середній",
+     "overrideAllowed": true
+    }
+   },
+   {
+    "ctx": {
+     "riskLevel": "низький",
+     "overProfile": true,
+     "noGrant": true,
+     "dlpExternal": true
+    },
+    "rule": "R1.5",
+    "out": {
+     "recommendation": "ескалувати",
+     "priority": "середній",
      "overrideAllowed": false
     }
    },
@@ -610,6 +673,20 @@
      "overProfile": true,
      "noGrant": true,
      "dlpExternal": false
+    },
+    "rule": "R1.6",
+    "out": {
+     "recommendation": "ескалувати",
+     "priority": "середній",
+     "overrideAllowed": false
+    }
+   },
+   {
+    "ctx": {
+     "riskLevel": "низький",
+     "overProfile": true,
+     "noGrant": false,
+     "dlpExternal": true
     },
     "rule": "R1.5",
     "out": {
@@ -623,48 +700,6 @@
      "riskLevel": "низький",
      "overProfile": true,
      "noGrant": false,
-     "dlpExternal": true
-    },
-    "rule": "R1.4",
-    "out": {
-     "recommendation": "ескалувати",
-     "priority": "середній",
-     "overrideAllowed": false
-    }
-   },
-   {
-    "ctx": {
-     "riskLevel": "низький",
-     "overProfile": true,
-     "noGrant": false,
-     "dlpExternal": false
-    },
-    "rule": "R1.6",
-    "out": {
-     "recommendation": "закрити як штатну",
-     "priority": "низький",
-     "overrideAllowed": true
-    }
-   },
-   {
-    "ctx": {
-     "riskLevel": "низький",
-     "overProfile": false,
-     "noGrant": true,
-     "dlpExternal": true
-    },
-    "rule": "R1.4",
-    "out": {
-     "recommendation": "ескалувати",
-     "priority": "середній",
-     "overrideAllowed": false
-    }
-   },
-   {
-    "ctx": {
-     "riskLevel": "низький",
-     "overProfile": false,
-     "noGrant": true,
      "dlpExternal": false
     },
     "rule": "R1.7",
@@ -678,10 +713,38 @@
     "ctx": {
      "riskLevel": "низький",
      "overProfile": false,
+     "noGrant": true,
+     "dlpExternal": true
+    },
+    "rule": "R1.5",
+    "out": {
+     "recommendation": "ескалувати",
+     "priority": "середній",
+     "overrideAllowed": false
+    }
+   },
+   {
+    "ctx": {
+     "riskLevel": "низький",
+     "overProfile": false,
+     "noGrant": true,
+     "dlpExternal": false
+    },
+    "rule": "R1.8",
+    "out": {
+     "recommendation": "закрити як штатну",
+     "priority": "низький",
+     "overrideAllowed": true
+    }
+   },
+   {
+    "ctx": {
+     "riskLevel": "низький",
+     "overProfile": false,
      "noGrant": false,
      "dlpExternal": true
     },
-    "rule": "R1.4",
+    "rule": "R1.5",
     "out": {
      "recommendation": "ескалувати",
      "priority": "середній",
@@ -695,7 +758,7 @@
      "noGrant": false,
      "dlpExternal": false
     },
-    "rule": "R1.7",
+    "rule": "R1.8",
     "out": {
      "recommendation": "закрити як штатну",
      "priority": "низький",
@@ -711,10 +774,10 @@
      "priorIncidents": 0,
      "dlpExternal": true
     },
-    "rule": "R2.1",
+    "rule": "R2.2",
     "out": {
-     "grounds": "підстави наявні",
-     "aggravating": false
+     "grounds": "потрібне уточнення",
+     "aggravating": true
     }
    },
    {
@@ -737,10 +800,10 @@
      "priorIncidents": 1,
      "dlpExternal": true
     },
-    "rule": "R2.1",
+    "rule": "R2.2",
     "out": {
-     "grounds": "підстави наявні",
-     "aggravating": false
+     "grounds": "потрібне уточнення",
+     "aggravating": true
     }
    },
    {
@@ -750,10 +813,10 @@
      "priorIncidents": 1,
      "dlpExternal": false
     },
-    "rule": "R2.1",
+    "rule": "R2.2",
     "out": {
-     "grounds": "підстави наявні",
-     "aggravating": false
+     "grounds": "потрібне уточнення",
+     "aggravating": true
     }
    },
    {
@@ -763,10 +826,10 @@
      "priorIncidents": 0,
      "dlpExternal": true
     },
-    "rule": "R2.1",
+    "rule": "R2.2",
     "out": {
-     "grounds": "підстави наявні",
-     "aggravating": false
+     "grounds": "потрібне уточнення",
+     "aggravating": true
     }
    },
    {
@@ -789,10 +852,10 @@
      "priorIncidents": 1,
      "dlpExternal": true
     },
-    "rule": "R2.1",
+    "rule": "R2.2",
     "out": {
-     "grounds": "підстави наявні",
-     "aggravating": false
+     "grounds": "потрібне уточнення",
+     "aggravating": true
     }
    },
    {
@@ -801,19 +864,6 @@
      "hrOrder": false,
      "priorIncidents": 1,
      "dlpExternal": false
-    },
-    "rule": "R2.1",
-    "out": {
-     "grounds": "підстави наявні",
-     "aggravating": false
-    }
-   },
-   {
-    "ctx": {
-     "outsideFiles": 5,
-     "hrOrder": true,
-     "priorIncidents": 0,
-     "dlpExternal": true
     },
     "rule": "R2.2",
     "out": {
@@ -826,37 +876,50 @@
      "outsideFiles": 5,
      "hrOrder": true,
      "priorIncidents": 0,
+     "dlpExternal": true
+    },
+    "rule": "R2.3",
+    "out": {
+     "grounds": "потрібне уточнення",
+     "aggravating": true
+    }
+   },
+   {
+    "ctx": {
+     "outsideFiles": 5,
+     "hrOrder": true,
+     "priorIncidents": 0,
+     "dlpExternal": false
+    },
+    "rule": "R2.4",
+    "out": {
+     "grounds": "потрібне уточнення",
+     "aggravating": false
+    }
+   },
+   {
+    "ctx": {
+     "outsideFiles": 5,
+     "hrOrder": true,
+     "priorIncidents": 1,
+     "dlpExternal": true
+    },
+    "rule": "R2.3",
+    "out": {
+     "grounds": "потрібне уточнення",
+     "aggravating": true
+    }
+   },
+   {
+    "ctx": {
+     "outsideFiles": 5,
+     "hrOrder": true,
+     "priorIncidents": 1,
      "dlpExternal": false
     },
     "rule": "R2.3",
     "out": {
      "grounds": "потрібне уточнення",
-     "aggravating": false
-    }
-   },
-   {
-    "ctx": {
-     "outsideFiles": 5,
-     "hrOrder": true,
-     "priorIncidents": 1,
-     "dlpExternal": true
-    },
-    "rule": "R2.2",
-    "out": {
-     "grounds": "потрібне уточнення",
-     "aggravating": true
-    }
-   },
-   {
-    "ctx": {
-     "outsideFiles": 5,
-     "hrOrder": true,
-     "priorIncidents": 1,
-     "dlpExternal": false
-    },
-    "rule": "R2.2",
-    "out": {
-     "grounds": "потрібне уточнення",
      "aggravating": true
     }
    },
@@ -866,23 +929,23 @@
      "hrOrder": false,
      "priorIncidents": 0,
      "dlpExternal": true
-    },
-    "rule": "R2.4",
-    "out": {
-     "grounds": "підстави відсутні",
-     "aggravating": true
-    }
-   },
-   {
-    "ctx": {
-     "outsideFiles": 5,
-     "hrOrder": false,
-     "priorIncidents": 0,
-     "dlpExternal": false
     },
     "rule": "R2.5",
     "out": {
      "grounds": "підстави відсутні",
+     "aggravating": true
+    }
+   },
+   {
+    "ctx": {
+     "outsideFiles": 5,
+     "hrOrder": false,
+     "priorIncidents": 0,
+     "dlpExternal": false
+    },
+    "rule": "R2.6",
+    "out": {
+     "grounds": "підстави відсутні",
      "aggravating": false
     }
    },
@@ -893,7 +956,7 @@
      "priorIncidents": 1,
      "dlpExternal": true
     },
-    "rule": "R2.4",
+    "rule": "R2.5",
     "out": {
      "grounds": "підстави відсутні",
      "aggravating": true
@@ -906,7 +969,7 @@
      "priorIncidents": 1,
      "dlpExternal": false
     },
-    "rule": "R2.4",
+    "rule": "R2.5",
     "out": {
      "grounds": "підстави відсутні",
      "aggravating": true
@@ -1048,7 +1111,33 @@
    }
   ]
  },
- "js_cases": 70,
+ "invariants": {
+  "I1": {
+   "checked": 24,
+   "violations": 0
+  },
+  "I2": {
+   "checked": 24,
+   "violations": 0
+  },
+  "I3": {
+   "checked": 24,
+   "violations": 0
+  },
+  "I4": {
+   "checked": 24,
+   "violations": 0
+  },
+  "I5": {
+   "checked": 16,
+   "violations": 0
+  },
+  "I6": {
+   "checked": 16,
+   "violations": 0
+  }
+ },
+ "js_cases": 73,
  "js_diff": [],
  "boundary": [
   [

@@ -27,7 +27,7 @@ COLORS = {
     ("ескалувати фахівцю",): (ORANGE, ""),
 }
 LEGENDS = {
-    "D1": [(ORANGE, "", "ескалувати, пріоритет високий"), (YELLOW, "", "ескалувати, пріоритет середній"),
+    "D1": [(ORANGE, "", "ескалувати,\nпріоритет високий"), (YELLOW, "", "ескалувати,\nпріоритет середній"),
            (BLUE, "", "закрити як штатну")],
     "D2": [(ORANGE, "", "підстави відсутні"), (PINK, "", "потрібне уточнення"), (BLUE, "", "підстави наявні"),
            ("white", "///", "обтяжуючі ознаки")],
@@ -41,11 +41,11 @@ def yn(v):
 
 def legend(ax, key, ncol):
     handles = [Patch(facecolor=c, edgecolor=TXT2 if h else c, hatch=h, label=l) for c, h, l in LEGENDS[key]]
-    ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=ncol, frameon=False,
-              fontsize=9, handlelength=1.6)
+    ax.legend(handles=handles, loc="upper left", bbox_to_anchor=(1.03, 1.0), ncol=ncol, frameon=False,
+              fontsize=12, handlelength=1.6)
 
 
-def grid(ax, rows, cols, cell, title, rlab, clab):
+def grid(ax, rows, cols, cell, title, rlab, clab, xlabel=None):
     for i, r in enumerate(rows):
         for j, c in enumerate(cols):
             rule, (color, hatch) = cell(r, c)
@@ -53,14 +53,16 @@ def grid(ax, rows, cols, cell, title, rlab, clab):
             if hatch:
                 ax.add_patch(plt.Rectangle((j, i), 1, 1, facecolor="none", edgecolor=TXT2, hatch=hatch,
                                            linewidth=0))
-            ax.text(j + 0.5, i + 0.5, rule, ha="center", va="center", fontsize=10, color=TXT, weight="bold")
+            ax.text(j + 0.5, i + 0.5, rule, ha="center", va="center", fontsize=12, color=TXT, weight="bold")
     ax.set_xlim(0, len(cols))
     ax.set_ylim(len(rows), 0)
     ax.set_xticks([j + 0.5 for j in range(len(cols))])
-    ax.set_xticklabels([clab(c) for c in cols], fontsize=8.5)
+    ax.set_xticklabels([clab(c) for c in cols], fontsize=12)
     ax.set_yticks([i + 0.5 for i in range(len(rows))])
-    ax.set_yticklabels([rlab(r) for r in rows], fontsize=8.5)
-    ax.set_title(title, fontsize=11, color=TXT)
+    ax.set_yticklabels([rlab(r) for r in rows], fontsize=12)
+    ax.set_title(title, fontsize=13, color=TXT, loc="left")
+    if xlabel:
+        ax.set_xlabel(xlabel, fontsize=12, color=TXT2)
     ax.tick_params(length=0)
     for s in ax.spines.values():
         s.set_visible(False)
@@ -75,34 +77,34 @@ def lookup(dec, pred):
 
 
 def coverage_chart():
-    fig = plt.figure(figsize=(11, 8.2), dpi=200)
-    g = fig.add_gridspec(2, 2, height_ratios=[1.25, 1], hspace=0.55, wspace=0.55)
-    ax1 = fig.add_subplot(g[0, :])
+    fig = plt.figure(figsize=(8.6, 11.2), dpi=200)
+    g = fig.add_gridspec(3, 1, height_ratios=[6, 4, 3], hspace=0.42)
+    ax1 = fig.add_subplot(g[0])
     rows1 = [(lv, d) for lv in ("високий", "середній", "низький") for d in (True, False)]
     cols1 = [(o, n) for o in (True, False) for n in (True, False)]
     grid(ax1, rows1, cols1,
          lambda r, c: lookup("D1_Significance", lambda x: (x["riskLevel"], x["dlpExternal"], x["overProfile"],
                                                           x["noGrant"]) == (r[0], r[1], c[0], c[1])),
-         f"D1: {len(rows1) * len(cols1)} комбінації умов", lambda r: f"рівень {r[0]}, f6 = 1: {yn(r[1])}",
-         lambda c: f"f1 > 0: {yn(c[0])}\nf4 = 1: {yn(c[1])}")
-    ax2 = fig.add_subplot(g[1, 0])
+         f"D1: {len(rows1) * len(cols1)} комбінації умов", lambda r: f"{r[0]}, f6 = 1: {yn(r[1])}",
+         lambda c: f"{yn(c[0])}, {yn(c[1])}", "f1 > 0, f4 = 1")
+    ax2 = fig.add_subplot(g[1])
     rows2 = [(k, hr) for k in (0, 5) for hr in (True, False)]
     cols2 = [(h, d) for h in (1, 0) for d in (True, False)]
     grid(ax2, rows2, cols2,
          lambda r, c: lookup("D2_Grounds", lambda x: (x["outsideFiles"], x["hrOrder"], x["priorIncidents"],
                                                      x["dlpExternal"]) == (r[0], r[1], c[0], c[1])),
          "D2: 16 комбінацій умов", lambda r: f"k {'> 0' if r[0] else '= 0'}, наказ: {yn(r[1])}",
-         lambda c: f"h {'> 0' if c[0] else '= 0'}\nf6 = 1: {yn(c[1])}")
-    ax3 = fig.add_subplot(g[1, 1])
+         lambda c: f"{'> 0' if c[0] else '= 0'}, {yn(c[1])}", "h, f6 = 1")
+    ax3 = fig.add_subplot(g[2])
     rows3 = ["немає", "залишкові права", "надмірне обмеження"]
     cols3 = [1, 2, 3, 4]
     grid(ax3, rows3, cols3,
          lambda r, c: lookup("D3_Containment", lambda x: (x["mismatch"], x["attempt"]) == (r, c)),
          f"D3: 12 комбінацій, Kmax = {res['params']['K_MAX']}", lambda r: r, lambda c: f"n = {c}")
-    legend(ax1, "D1", 3)
-    legend(ax2, "D2", 2)
+    legend(ax1, "D1", 1)
+    legend(ax2, "D2", 1)
     legend(ax3, "D3", 1)
-    fig.subplots_adjust(left=0.2, right=0.97, top=0.95, bottom=0.17)
+    fig.subplots_adjust(left=0.27, right=0.64, top=0.97, bottom=0.04)
     fig.savefig("fig_coverage.png")
 
 

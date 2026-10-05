@@ -4,24 +4,24 @@
 
 ## Вміст
 
-* Лабораторна_4_правила_рішень.dmn: таблиці рішень D1_Significance, D2_Grounds, D3_Containment (DMN 1.3, Camunda 8)
-* Лабораторна_4_модель_з_правилами.bpmn: модель BPMN з Business Rule Task і умовами FEEL
+* Лабораторна_4_правила_рішень.dmn: таблиці рішень D1_Significance, D2_Grounds, D3_Containment (DMN 1.3, оскільки цю версію підтримує Camunda 8)
+* Лабораторна_4_модель_з_правилами.bpmn: модель BPMN з Business Rule Task, Data Store Reference і умовами FEEL
 * Лабораторна_4_діаграма_з_правилами.png, fig_model_part1.png, fig_model_part2.png: рендер моделі bpmn-js
 * fig_dmn_*.png: рендер таблиць рішень dmn-js
 * fig_coverage.png: покриття комбінацій умов правилами
 * rules.py: еталонна реалізація правил
 * dmn_eval.py: інтерпретатор таблиць DMN на Python
 * eval_dmn.mjs: виконання таблиць рушієм dmn-eval-js
-* scenarios.py: тестові сценарії і перебір комбінацій, результат у scenario_results.json
+* scenarios.py: тестові сценарії, перебір комбінацій і перевірка властивостей набору правил, результат у scenario_results.json
 * gen_dmn.py, gen_model.py: генерація файлів DMN і BPMN
 * validate.mjs, render.py, render_dmn.py, compare_models.py, charts.py: перевірка, рендер, показники, рисунки
 * risk_score.py: оцінка ризику R з ЛР 3
 * as_is.bpmn, gen_tobe.py, Лабораторна_3_модель_TO-BE.bpmn: вихідні моделі ЛР 3 і генератор моделі TO-BE
-* build_report.py: збирання звіту
+* build_report.py, labkit.py: збирання звіту (labkit.py формує титульну сторінку і структуру документа)
 
 ## Запуск
 
-Потрібні Python 3 з matplotlib і Pillow, Node.js, Google Chrome.
+Потрібні Python 3 з matplotlib, Pillow і python-docx, Node.js, Google Chrome. Для збирання звіту в PDF додатково потрібен LibreOffice (/Applications/LibreOffice.app).
 
 ```
 npm install
@@ -33,4 +33,10 @@ python3 render_dmn.py Лабораторна_4_правила_рішень.dmn D
 python3 scenarios.py
 python3 compare_models.py Лабораторна_3_модель_TO-BE.bpmn Лабораторна_4_модель_з_правилами.bpmn metrics.json
 python3 charts.py
+```
+
+Повне збирання звіту одним запуском (усі кроки вище виконуються автоматично):
+
+```
+python3 build_report.py
 ```
